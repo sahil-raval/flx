@@ -487,12 +487,12 @@ export default function Home() {
               </Link>
             </motion.div>
 
-            <motion.div variants={up}
+            {/* <motion.div variants={up}
               className="pt-2 text-[9px] uppercase tracking-[0.28em] text-white/25 leading-relaxed"
               style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "16px" }}
             >
               45+ years of expertise · Natural &amp; lab-grown · Served KGK Diamond, Venus Jewellery
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
 
