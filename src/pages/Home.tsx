@@ -395,10 +395,10 @@ export default function Home() {
         />
 
         {/* Sweeping depth shimmer */}
-        <div className="depth-shimmer" />
+        {/* <div className="depth-shimmer" /> */}
 
         {/* Ocean shimmer strip */}
-        <div className="absolute inset-0 ocean-shimmer" style={{ opacity: 0.7 }} />
+        {/* <div className="absolute inset-0 ocean-shimmer" style={{ opacity: 0.7 }} /> */}
 
         {/* Floating particles */}
         {PARTICLES.map((p, i) => (
@@ -445,13 +445,13 @@ export default function Home() {
               Geelong, Victoria, Australia, Est. 1978
             </motion.p>
 
-            <motion.h1
+            {/* <motion.h1
               variants={up}
               className="font-serif text-[2.6rem] sm:text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none"
               style={{ letterSpacing: "-0.02em" }}
             >
               From IF<br />to FL.
-            </motion.h1>
+            </motion.h1> */}
 
             <motion.div variants={up}>
               <span className="ocean-line tide-pulse" />
@@ -955,7 +955,7 @@ export default function Home() {
           </div>
 
           {/* ── Diamond shape marquee ── */}
-          <div className="overflow-hidden mt-12 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+          {/* <div className="overflow-hidden mt-12 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
             <div className="marquee-track flex whitespace-nowrap pt-6 pb-2">
               {[0, 1].map(pass => (
                 <span key={pass} className="flex items-center shrink-0">
@@ -973,7 +973,7 @@ export default function Home() {
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
         </div>
       </section>
@@ -981,7 +981,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           8. FEATURED INVENTORY
       ══════════════════════════════════════════════════ */}
-      {/* <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-4">
             <div>
@@ -1013,7 +1013,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
       
 
       {/* ══════════════════════════════════════════════════
@@ -1295,11 +1295,11 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           12. B2B REASSURANCE + ENQUIRY FORM
       ══════════════════════════════════════════════════ */}
-      <div className="py-5 px-6 text-center" style={{ background: "#F4F8FC", borderTop: "1px solid rgba(2,39,74,0.07)" }}>
+      {/* <div className="py-5 px-6 text-center" style={{ background: "#F4F8FC", borderTop: "1px solid rgba(2,39,74,0.07)" }}>
         <p className="text-[9px] uppercase tracking-[0.38em]" style={{ color: "rgba(2,39,74,0.35)" }}>
           No commitment · Full discretion · Response within 24 hours
         </p>
-      </div>
+      </div> */}
 
       {/* ══════════════════════════════════════════════════
           13. ENQUIRY FORM
