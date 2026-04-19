@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DiamondCard } from "@/components/DiamondCard";
-import { Volume2, VolumeX, ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
+import { Volume2, VolumeX, ArrowRight, CheckCircle2, ChevronDown, Award, Shield, Sliders, Cpu } from "lucide-react";
 
 /* ── FAQ section ────────────────────────────────────── */
 const FAQS = [
@@ -512,7 +512,7 @@ export default function Home() {
       ══════════════════════════════════════════════════ */}
       <section className="py-5 px-6 border-b border-white/5" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between items-center gap-6 text-[9px] uppercase tracking-[0.3em] text-white/35">
-          {["47 Years of Combined Expertise", "GIA-Certified on Every Stone", "B2B Trade Partners Only", "Geelong, Victoria, Australia", "Trusted by KGK Diamond · Venus Jewellery · Excell Overseas"].map((t, i) => (
+          {["47 Years of Combined Expertise", "GIA-Certified on Every Stone", "B2B Trade Partners Only", "Geelong, Victoria, Australia"].map((t, i) => (
             <span key={i} className="flex items-center gap-3">
               {i > 0 && <span className="hidden md:block w-px h-3" style={{ background: "rgba(28,169,201,0.3)" }} />}
               {t}
@@ -529,11 +529,11 @@ export default function Home() {
           <p className="text-center text-[8px] uppercase tracking-[0.55em] mb-8" style={{ color: "rgba(2,39,74,0.3)" }}>
             Trusted by leading diamond houses
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
+          <div className="flex flex-wrap justify-center items-center gap-x-14 gap-y-8">
             {[
-              { name: "KGK Diamond",       sub: "Jaipur · Dubai · Hong Kong" },
-              { name: "Venus Jewellery",   sub: "Mumbai · Antwerp"           },
-              { name: "Excell Overseas",   sub: "Surat · Singapore"          },
+              { name: "KGK Diamond",     sub: "Jaipur · Dubai · Hong Kong", logo: null,   logoH: 56 },
+              { name: "Venus Jewellery", sub: "Mumbai · Antwerp",            logo: null, logoH: 44 },
+              { name: "Excell Overseas", sub: "Surat · Singapore",           logo: null,              logoH: 0  },
             ].map((co, i) => (
               <motion.div
                 key={co.name}
@@ -541,14 +541,28 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12, duration: 0.6 }}
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center gap-2"
               >
-                <span
-                  className="font-serif text-xl md:text-2xl"
-                  style={{ color: "#02274A", letterSpacing: "-0.01em" }}
-                >
-                  {co.name}
-                </span>
+                {co.logo ? (
+                  <img
+                    src={co.logo}
+                    alt={co.name}
+                    style={{
+                      height: co.logoH,
+                      width: "auto",
+                      opacity: 0.55,
+                      mixBlendMode: "multiply",
+                      objectFit: "contain",
+                    }}
+                  />
+                ) : (
+                  <span
+                    className="font-serif text-xl md:text-2xl"
+                    style={{ color: "#02274A", letterSpacing: "-0.01em" }}
+                  >
+                    {co.name}
+                  </span>
+                )}
                 <span className="text-[8px] uppercase tracking-[0.35em]" style={{ color: "rgba(2,39,74,0.3)" }}>
                   {co.sub}
                 </span>
@@ -697,99 +711,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════
-          3. IF → FL OPPORTUNITY
-      ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
-
-          {/* Left — copy */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="space-y-6">
-            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
-              IF→FL Conversion
-            </motion.p>
-            <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none">
-              Unlock hidden value<br />in your IF stone.
-            </motion.h2>
-            <motion.div variants={up}><span className="ocean-line" /></motion.div>
-            <motion.p variants={up} className="text-white/55 text-sm sm:text-base md:text-lg leading-relaxed font-light max-w-lg">
-              When a GIA certificate notes specific surface characteristics on an Internally Flawless
-              stone, there is often a viable path to Flawless grade, without leaving the same
-              carat weight bracket.
-            </motion.p>
-            <motion.p variants={up} className="text-white/35 text-sm leading-relaxed max-w-lg">
-              This requires reading GIA comments with precision, then executing a micro-regrind
-              under 0.01mm, removing the surface characteristic without touching the body of the stone.
-              It is not a shortcut. It is 47 years of judgment applied to one stone at a time.
-            </motion.p>
-            <motion.div variants={up} className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
-              <Link href="/investment" className="block">
-                <Button
-                  className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
-                  style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
-                  data-testid="btn-iftfl-learn"
-                >
-                  How It Works
-                </Button>
-              </Link>
-              <Link href="/contact" className="block">
-                <Button
-                  variant="outline"
-                  className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8 w-full sm:w-auto"
-                  style={{ borderColor: "rgba(28,169,201,0.4)", height: "48px", padding: "0 2rem" }}
-                  data-testid="btn-iftfl-submit"
-                >
-                  Submit a GIA Cert →
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.p variants={up} className="text-[10px] italic text-white/25 pt-1">
-              Ask us about your stone's potential. Assessment is always free.
-            </motion.p>
-          </motion.div>
-
-          {/* Right — 3-step process */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={stagger}
-            className="divide-y"
-            style={{ borderColor: "rgba(255,255,255,0.07)" }}
-          >
-            {[
-              {
-                n: "01",
-                title: "Identify the stone",
-                body: "We read the GIA certificate comments. Roughly 15–20% of IF stones carry comment types indicating a removable surface characteristic. This assessment is provided at no cost."
-              },
-              {
-                n: "02",
-                title: "Precision regrinding",
-                body: "Under high-magnification, Babu Vekariya removes the surface imperfection in micro-millimeters. Hours per stone, no automation, no margin for error. The carat weight remains within the same bracket."
-              },
-              {
-                n: "03",
-                title: "New GIA FL certificate",
-                body: "The stone is resubmitted to GIA independently. A new Flawless certificate is issued. The stone is now Flawless, verifiably, globally, permanently."
-              },
-            ].map((step, i) => (
-              <motion.div key={i} variants={up} className="py-8 flex items-start gap-8 group">
-                <span
-                  className="text-3xl shrink-0 leading-none transition-colors font-light tabular-nums"
-                  style={{ color: "#1CA9C9", opacity: 0.5 }}
-                >
-                  {step.n}
-                </span>
-                <div>
-                  <h3 className="font-serif text-xl text-white mb-2">{step.title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed">{step.body}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════════════════
           4. QUALIFIER — "What brings you here today?"
@@ -950,6 +871,134 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
+          IF → FL EXPERTISE
+      ══════════════════════════════════════════════════ */}
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
+        <div className="max-w-7xl mx-auto">
+
+          {/* Header row */}
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
+            className="grid lg:grid-cols-2 gap-16 items-end mb-16 md:mb-20"
+          >
+            <div className="space-y-5">
+              <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
+                IF→FL Conversion
+              </motion.p>
+              <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-none">
+                Unlock hidden value<br />in your IF stone.
+              </motion.h2>
+              <motion.div variants={up}><span className="ocean-line" /></motion.div>
+            </div>
+            <motion.div variants={up} className="space-y-6">
+              <p className="text-white/50 text-sm sm:text-base leading-relaxed font-light">
+                When a GIA certificate notes specific surface characteristics on an Internally Flawless
+                stone, there is often a viable path to Flawless grade — without leaving the same carat weight bracket.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                <Link href="/investment" className="block">
+                  <Button
+                    className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
+                    style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
+                    data-testid="btn-iftfl-learn"
+                  >
+                    How It Works
+                  </Button>
+                </Link>
+                <Link href="/contact" className="block">
+                  <Button
+                    variant="outline"
+                    className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8 w-full sm:w-auto"
+                    style={{ borderColor: "rgba(28,169,201,0.4)", height: "48px", padding: "0 2rem" }}
+                    data-testid="btn-iftfl-submit"
+                  >
+                    Submit a GIA Cert →
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* 4-step visual flow */}
+          <div className="relative">
+            {/* Connecting line (desktop only) */}
+            <div
+              className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(28,169,201,0.3) 15%, rgba(28,169,201,0.3) 85%, transparent)" }}
+            />
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(255,255,255,0.05)" }}>
+              {[
+                {
+                  n: "01",
+                  label: "GIA Cert Review",
+                  body: "Send the GIA certificate number. We read the comments for removable surface characteristic indicators. Roughly 15–20% of IF stones qualify.",
+                  tag: "No cost · 24h turnaround"
+                },
+                {
+                  n: "02",
+                  label: "Feasibility",
+                  body: "We assess whether the characteristic is safely removable without touching carat weight. A clear yes or no — no ambiguity, no obligation.",
+                  tag: "Written assessment"
+                },
+                {
+                  n: "03",
+                  label: "Craftsmanship",
+                  body: "Babu Vekariya executes a precision micro-regrind under 0.01mm. Hours per stone, no automation, no margin for error.",
+                  tag: "47 years of judgment"
+                },
+                {
+                  n: "04",
+                  label: "Result",
+                  body: "The stone is resubmitted to GIA independently. A new FL certificate is issued — verifiable, permanent, globally recognised.",
+                  tag: "New GIA FL certificate"
+                },
+              ].map((step, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.12, duration: 0.7, ease: EASE }}
+                  className="p-7 md:p-9 flex flex-col gap-4"
+                  style={{ background: "#02274A" }}
+                >
+                  {/* Step number with dot */}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="text-2xl font-light tabular-nums leading-none"
+                      style={{ color: "#1CA9C9", opacity: 0.55 }}
+                    >
+                      {step.n}
+                    </span>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#1CA9C9", opacity: 0.4 }} />
+                  </div>
+                  <h3 className="font-serif text-lg text-white leading-snug">{step.label}</h3>
+                  <p className="text-white/35 text-xs leading-relaxed flex-1">{step.body}</p>
+                  <p
+                    className="text-[9px] uppercase tracking-widest font-medium pt-1"
+                    style={{ color: "rgba(28,169,201,0.5)", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "0.75rem" }}
+                  >
+                    {step.tag}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Value teaser */}
+          <motion.p
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 0.8 }}
+            className="text-center text-[11px] italic mt-8 font-light"
+            style={{ color: "rgba(255,255,255,0.22)" }}
+          >
+            Ask us about your stone's potential — assessment is always free.
+          </motion.p>
+
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
           7. THREE SERVICES
       ══════════════════════════════════════════════════ */}
       <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
@@ -974,8 +1023,8 @@ export default function Home() {
               {
                 num: "01",
                 title: "Diamond Sourcing",
-                body: "Natural GIA-certified diamonds. Lab-grown precision stones. D–K colour, VVS1–SI2 clarity, any shape, any size. Trade pricing only, no retail. Minimum order requirements apply.",
-                sub: "Natural · Lab-Grown · Melee",
+                body: "GIA-certified natural and lab-grown stones at trade pricing. Any shape, any size, any spec. No retail. Minimum order requirements apply.",
+                tags: ["Natural", "Lab-Grown", "Melee"],
                 link: "/diamonds",
                 linkText: "View Diamond Inventory"
               },
@@ -983,15 +1032,15 @@ export default function Home() {
                 num: "02",
                 title: "IF→FL Conversion",
                 body: "Send any IF stone's GIA cert number. We analyse the comments, assess viability at no cost, and if the stone qualifies, execute the precision regrind. New GIA FL certificate issued.",
-                sub: "Assessment · Regrinding · New Certificate",
+                tags: ["Assessment", "Regrinding", "New Certificate"],
                 link: "/investment",
                 linkText: "Learn About Conversion"
               },
               {
                 num: "03",
                 title: "B2B Advisory",
-                body: "White-label sourcing. Investment stone advisory. Custom specification briefs. Partnership structures designed for retailers, jewellers, private clients, and institutional buyers.",
-                sub: "White-Label · Investment · Bespoke",
+                body: "White-label sourcing. Investment stone advisory. Custom specification briefs. Partnership structures for retailers, jewellers, private clients, and institutional buyers.",
+                tags: ["White-Label", "Investment", "Bespoke"],
                 link: "/trade",
                 linkText: "Explore Partnership"
               }
@@ -1008,9 +1057,24 @@ export default function Home() {
                 onMouseLeave={e => (e.currentTarget.style.background = "#02274A")}
               >
                 <span className="text-4xl font-light tabular-nums" style={{ color: "#1CA9C9", opacity: 0.4 }}>{svc.num}</span>
-                <div>
-                  <h3 className="font-serif text-2xl text-white mb-1">{svc.title}</h3>
-                  <p className="text-[9px] uppercase tracking-widest mb-3" style={{ color: "rgba(28,169,201,0.5)" }}>{svc.sub}</p>
+                <div className="flex-1 flex flex-col gap-4">
+                  <h3 className="font-serif text-2xl text-white">{svc.title}</h3>
+                  {/* Stone-type / category chips */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {svc.tags.map((tag, j) => (
+                      <span
+                        key={j}
+                        className="text-[9px] uppercase tracking-widest px-2.5 py-1 font-medium"
+                        style={{
+                          color: "rgba(28,169,201,0.75)",
+                          border: "1px solid rgba(28,169,201,0.22)",
+                          background: "rgba(28,169,201,0.06)"
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                   <p className="text-white/40 text-sm leading-relaxed">{svc.body}</p>
                 </div>
                 <Link
@@ -1023,6 +1087,28 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          {/* ── Diamond shape marquee ── */}
+          <div className="overflow-hidden mt-12 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+            <div className="marquee-track flex whitespace-nowrap pt-6 pb-2">
+              {[0, 1].map(pass => (
+                <span key={pass} className="flex items-center shrink-0">
+                  {["Round", "Oval", "Cushion", "Pear", "Emerald", "Princess", "Marquise", "Radiant"].map((shape, i) => (
+                    <span key={i} className="flex items-center">
+                      <span
+                        className="text-[11px] uppercase tracking-[0.45em] font-light px-8 md:px-12"
+                        style={{ color: "rgba(255,255,255,0.18)" }}
+                      >
+                        {shape}
+                      </span>
+                      <span style={{ color: "rgba(28,169,201,0.25)", fontSize: "8px" }}>◆</span>
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -1064,30 +1150,80 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          9. TRUST PILLARS
+          9. WHY FLXDIAMONDS
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 px-6 border-t border-[#02274A]/8" style={{ background: "white" }}>
-        <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { n: "47", label: "Years of Combined Expertise",    sub: "Since Babu Vekariya began at age 12 in Surat, India, 1978." },
-            { n: "GIA", label: "Certified on Every Stone",       sub: "The global standard. Every stone, every time." },
-            { n: "3",   label: "Trusted Diamond Houses",         sub: "KGK Diamond, Venus Jewellery, Excell Overseas." },
-            { n: "B2B", label: "Trade Partners Only, by Design", sub: "No retail. No public pricing. Serious professionals only." },
-          ].map((p, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="p-8 border border-[#02274A]/8"
-              style={{ background: "#F4F8FC" }}
-            >
-              <div className="text-4xl mb-2 font-light tabular-nums" style={{ color: "#1CA9C9" }}>{p.n}</div>
-              <div className="text-[9px] uppercase tracking-[0.2em] text-[#02274A] mb-3 font-medium">{p.label}</div>
-              <p className="text-xs text-[#02274A]/40 leading-relaxed">{p.sub}</p>
-            </motion.div>
-          ))}
+      <section className="py-20 md:py-28 px-6 border-t border-[#02274A]/8" style={{ background: "white" }}>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
+            className="mb-14"
+          >
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
+              Our Difference
+            </motion.p>
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A]">
+              Why FLXDIAMONDS.
+            </motion.h2>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(2,39,74,0.06)" }}>
+            {[
+              {
+                Icon: Award,
+                title: "Expertise",
+                body: "47 years of diamond craftsmanship, from Surat to Geelong. Babu Vekariya's precision regrinding technique is the result of a lifetime dedicated to a single discipline.",
+                tag: "Est. 1978"
+              },
+              {
+                Icon: Shield,
+                title: "Discretion",
+                body: "Every engagement is commercially confidential by default. NDAs available on request. Your clients, your stones, and your pricing structures remain yours alone.",
+                tag: "NDA as standard"
+              },
+              {
+                Icon: Sliders,
+                title: "Custom Solutions",
+                body: "No off-the-shelf briefs. Every sourcing mandate is built to your exact specification — shape, carat, colour, clarity, and budget. No two engagements are the same.",
+                tag: "Built to your brief"
+              },
+              {
+                Icon: Cpu,
+                title: "AI Precision",
+                body: "Diamond grading analysis supported by AI-powered assessment tools. Human judgment refined over 47 years, combined with data-driven precision at every step.",
+                tag: "Human + AI"
+              },
+            ].map(({ Icon, title, body, tag }, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: EASE }}
+                className="p-9 flex flex-col gap-5 group"
+                style={{ background: "white" }}
+              >
+                {/* Icon */}
+                <div
+                  className="w-11 h-11 flex items-center justify-center shrink-0"
+                  style={{ background: "rgba(28,169,201,0.07)", border: "1px solid rgba(28,169,201,0.18)" }}
+                >
+                  <Icon size={18} style={{ color: "#1CA9C9" }} strokeWidth={1.5} />
+                </div>
+
+                <div className="flex flex-col gap-2 flex-1">
+                  <h3 className="font-serif text-xl text-[#02274A]">{title}</h3>
+                  <p className="text-[#02274A]/45 text-sm leading-relaxed">{body}</p>
+                </div>
+
+                <p
+                  className="text-[9px] uppercase tracking-widest font-medium pt-4"
+                  style={{ color: "rgba(28,169,201,0.6)", borderTop: "1px solid rgba(2,39,74,0.07)" }}
+                >
+                  {tag}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
