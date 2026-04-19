@@ -981,7 +981,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           8. FEATURED INVENTORY
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
+      {/* <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-4">
             <div>
@@ -1013,7 +1013,8 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
+      
 
       {/* ══════════════════════════════════════════════════
           9. WHY FLXDIAMONDS
@@ -1162,7 +1163,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           10. HERITAGE — Babu Vekariya
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
+      {/* <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -1172,7 +1173,7 @@ export default function Home() {
             className="grid lg:grid-cols-3 gap-16 items-start"
           >
             {/* Left — label + heading */}
-            <div className="space-y-6 lg:col-span-1">
+            {/* <div className="space-y-6 lg:col-span-1">
               <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
                 Our Heritage
               </motion.p>
@@ -1193,10 +1194,10 @@ export default function Home() {
                   </div>
                 ))}
               </motion.div>
-            </div>
+            </div> */}
 
             {/* Right — narrative */}
-            <motion.div variants={up} className="lg:col-span-2 space-y-6 pt-2 lg:pt-14">
+            {/* <motion.div variants={up} className="lg:col-span-2 space-y-6 pt-2 lg:pt-14">
               <p className="text-[#02274A]/55 text-sm sm:text-base md:text-lg leading-relaxed font-light">
                 Babu began cutting diamonds in 1978, aged 12, in the diamond ateliers of Surat, India.
                 By his late 20s he was among a small group of craftsmen who could reliably identify
@@ -1236,14 +1237,13 @@ export default function Home() {
                 </Link>
               </div>
             </motion.div>
-          </motion.div>
-        </div>
-      </section>
+          </motion.div> */}
+   
 
       {/* ══════════════════════════════════════════════════
           10b. FAQ — Kill final objections
       ══════════════════════════════════════════════════ */}
-      <FaqSection />
+      {/* <FaqSection /> */}
 
       {/* ══════════════════════════════════════════════════
           11. CLOSING — Ocean panorama + CTA
