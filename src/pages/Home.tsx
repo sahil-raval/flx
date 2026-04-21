@@ -17,7 +17,7 @@ interface WordRevealProps {
   as?: "h1" | "h2" | "span";
   style?: React.CSSProperties;
 }
-function WordReveal({ text, className = "", delay = 0, as: Tag = "span" }: WordRevealProps) {
+function WordReveal({ text, className = "", delay = 0, as: Tag = "span", style }: WordRevealProps) {
   const words = text.split(" ");
   return (
     <Tag className={className} style={style}>
@@ -38,7 +38,7 @@ function WordReveal({ text, className = "", delay = 0, as: Tag = "span" }: WordR
 }
 
 /* ── Viewport word reveal (for scroll-triggered headings) */
-function ViewportWordReveal({ text, className = "", delay = 0, as: Tag = "h2" }: WordRevealProps) {
+function ViewportWordReveal({ text, className = "", delay = 0, as: Tag = "h2", style }: WordRevealProps) {
   const ref  = useRef<HTMLHeadingElement>(null);
   const inView = useInView(ref as React.RefObject<Element>, { once: true, margin: "-80px" });
   const words = text.split(" ");
