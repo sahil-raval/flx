@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useInView, useMotionValue, useSpring } from "framer-motion";
 import { EASE } from "@/lib/motion";
@@ -110,7 +109,7 @@ const FAQS = [
 function FaqSection() {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <section className="py-24 px-6" style={{ background: "#02274A" }}>
+    <section className="py-24 px-4 sm:px-6" style={{ background: "#02274A" }}>
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
@@ -119,7 +118,7 @@ function FaqSection() {
           <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
             Before You Reach Out
           </motion.p>
-          <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl" style={{ color: "rgba(255,255,255,0.88)" }}>
+          <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl" style={{ color: "rgba(255,255,255,0.88)" }}>
             Common questions.
           </motion.h2>
         </motion.div>
@@ -134,11 +133,11 @@ function FaqSection() {
               transition={{ delay: i * 0.07, duration: 0.5 }}
             >
               <button
-                className="w-full text-left py-6 flex items-start justify-between gap-6 group"
+                className="w-full text-left py-5 sm:py-6 flex items-start justify-between gap-4 sm:gap-6 group"
                 onClick={() => setOpen(open === i ? null : i)}
                 data-testid={`faq-${i}`}
               >
-                <span className="font-serif text-lg leading-snug group-hover:text-[#1CA9C9] transition-colors" style={{ color: "rgba(255,255,255,0.82)" }}>
+                <span className="font-serif text-base sm:text-lg leading-snug group-hover:text-[#1CA9C9] transition-colors" style={{ color: "rgba(255,255,255,0.82)" }}>
                   {faq.q}
                 </span>
                 <span
@@ -436,7 +435,7 @@ function TestimonialSlider() {
     >
       {/* Card */}
       <div
-        className="relative px-6 md:px-20 py-12 md:py-16"
+        className="relative px-6 sm:px-10 md:px-20 py-10 md:py-16"
         style={{
           background: "white",
           border: "1px solid rgba(28,169,201,0.18)",
@@ -445,14 +444,14 @@ function TestimonialSlider() {
       >
         {/* Opening quote mark — decorative */}
         <span
-          className="absolute top-8 left-8 md:left-12 font-serif select-none pointer-events-none"
-          style={{ color: "#1CA9C9", fontSize: "5rem", lineHeight: 1, opacity: 0.12 }}
+          className="absolute top-6 left-6 sm:top-8 sm:left-8 md:left-12 font-serif select-none pointer-events-none"
+          style={{ color: "#1CA9C9", fontSize: "4rem", lineHeight: 1, opacity: 0.12 }}
         >
           &ldquo;
         </span>
 
         {/* Slide content */}
-        <div className="overflow-hidden" style={{ minHeight: "200px" }}>
+        <div className="overflow-hidden" style={{ minHeight: "180px" }}>
           <AnimatePresence custom={dir} mode="wait">
             <motion.div
               key={idx}
@@ -462,11 +461,11 @@ function TestimonialSlider() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.42, ease: [0.76, 0, 0.24, 1] }}
-              className="flex flex-col items-center text-center gap-7"
+              className="flex flex-col items-center text-center gap-6 sm:gap-7"
             >
               {/* Quote */}
               <p
-                className="font-playfair text-xl md:text-xl lg:text-xl font-light italic leading-relaxed"
+                className="font-playfair text-base sm:text-lg md:text-xl font-light italic leading-relaxed"
                 style={{ color: "#02274A", maxWidth: "640px" }}
               >
                 {t.quote}
@@ -742,11 +741,18 @@ export default function Home() {
           ))}
         </ParallaxLayer>
 
-        {/* Sound toggle — top right */}
+        {/* Sound toggle — top right, safe distance from notch/status bar */}
         <button
           onClick={toggleMute}
-          className="absolute top-24 right-8 z-20 flex items-center gap-2 px-3 py-2 text-[10px] uppercase tracking-wider transition-all"
-          style={{ color: isMuted ? "rgba(255,255,255,0.4)" : "#1CA9C9", border: "1px solid", borderColor: isMuted ? "rgba(255,255,255,0.12)" : "rgba(28,169,201,0.4)" }}
+          className="absolute z-20 flex items-center gap-2 px-3 py-2 text-[10px] uppercase tracking-wider transition-all"
+          style={{
+            top: "env(safe-area-inset-top, 96px)",
+            right: "max(env(safe-area-inset-right, 0px), 24px)",
+            marginTop: "24px",
+            color: isMuted ? "rgba(255,255,255,0.4)" : "#1CA9C9",
+            border: "1px solid",
+            borderColor: isMuted ? "rgba(255,255,255,0.12)" : "rgba(28,169,201,0.4)",
+          }}
           data-testid="btn-toggle-sound"
           aria-label={isMuted ? "Unmute ocean" : "Mute ocean"}
         >
@@ -755,7 +761,9 @@ export default function Home() {
         </button>
 
         {/* Hero copy — bottom-left editorial */}
-        <div className="relative z-10 w-full px-8 md:px-16 lg:px-24 pt-24 pb-12 sm:pb-20 md:pb-24">
+        <div className="relative z-10 w-full px-5 sm:px-8 md:px-16 lg:px-24 pt-24 pb-10 sm:pb-20 md:pb-24"
+          style={{ paddingBottom: "max(40px, env(safe-area-inset-bottom, 40px))" }}
+        >
           <div className="max-w-3xl">
 
             {/* Overline */}
@@ -763,34 +771,18 @@ export default function Home() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-              className="text-[10px] uppercase tracking-[0.5em] font-medium mb-5"
+              className="text-[10px] uppercase tracking-[0.4em] sm:tracking-[0.5em] font-medium mb-4 sm:mb-5"
               style={{ color: "#1CA9C9" }}
             >
               Geelong, Victoria, Australia · Est. 1978
             </motion.p>
-
-            {/* Main headline — word-by-word reveal */}
-            {/* <div className="mb-4" style={{ overflow: "hidden" }}>
-              <div
-                className="font-serif text-white leading-[0.92] overflow-hidden"
-                style={{ fontSize: "clamp(3.4rem, 7vw, 6.8rem)", letterSpacing: "-0.02em" }}
-              >
-                <WordReveal text="Flawless," className="block" delay={0.4} as="span" />
-              </div>
-              <div
-                className="font-serif leading-[0.92] overflow-hidden"
-                style={{ fontSize: "clamp(3.4rem, 7vw, 6.8rem)", letterSpacing: "-0.02em" }}
-              >
-                <WordReveal text="by Design." className="block text-shimmer" delay={0.55} as="span" />
-              </div>
-            </div> */}
 
             {/* Separator */}
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: EASE, delay: 1.0 }}
-              style={{ transformOrigin: "left", width: "56px", height: "1px", background: "linear-gradient(90deg, #1CA9C9, rgba(28,169,201,0.08))", marginBottom: "24px" }}
+              style={{ transformOrigin: "left", width: "56px", height: "1px", background: "linear-gradient(90deg, #1CA9C9, rgba(28,169,201,0.08))", marginBottom: "20px" }}
             />
 
             {/* Body */}
@@ -798,7 +790,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, ease: EASE, delay: 1.1 }}
-              className="text-white/55 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-lg mb-8"
+              className="text-white/55 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-lg mb-7 sm:mb-8"
             >
               B2B diamond sourcing &amp; IF→FL precision conversion. Natural, lab-grown, and
               custom — every stone GIA-certified.
@@ -814,7 +806,7 @@ export default function Home() {
               <MagneticBtn>
                 <Link href="/diamonds">
                   <Button
-                    className="shimmer-btn rounded-none h-[52px] px-10 text-xs uppercase tracking-[0.22em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
+                    className="shimmer-btn rounded-none h-[52px] px-8 sm:px-10 text-xs uppercase tracking-[0.18em] sm:tracking-[0.22em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
                     style={{ background: "#1CA9C9" }}
                     data-testid="hero-cta-source"
                   >
@@ -826,7 +818,7 @@ export default function Home() {
                 <Link href="/contact">
                   <Button
                     variant="outline"
-                    className="rounded-none h-[52px] px-10 text-xs uppercase tracking-[0.22em] text-white hover:bg-white/8 w-full sm:w-auto"
+                    className="rounded-none h-[52px] px-8 sm:px-10 text-xs uppercase tracking-[0.18em] sm:tracking-[0.22em] text-white hover:bg-white/8 w-full sm:w-auto"
                     style={{ borderColor: "rgba(28,169,201,0.45)", background: "rgba(28,169,201,0.04)" }}
                     data-testid="hero-cta-if-stone"
                   >
@@ -849,7 +841,7 @@ export default function Home() {
           <ChevronDown size={14} className="animate-bounce" style={{ color: "rgba(28,169,201,0.45)" }} />
         </motion.div>
 
-        {/* Stats strip — compact, transparent, overlaid at bottom of hero */}
+        {/* Stats strip */}
         <motion.div
           className="absolute bottom-0 left-0 right-0 z-10"
           initial={{ opacity: 0, y: 16 }}
@@ -898,9 +890,9 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           2c. CLIENT LOGO STRIP — Instant social proof
       ══════════════════════════════════════════════════ */}
-      <section className="py-5 px-6" style={{ background: "#F4F8FC", borderBottom: "1px solid rgba(2,39,74,0.07)" }}>
+      <section className="py-8 sm:py-5 px-4 sm:px-6" style={{ background: "#F4F8FC", borderBottom: "1px solid rgba(2,39,74,0.07)" }}>
          <div className="max-w-5xl mx-auto">
-           <div className="flex flex-wrap justify-center items-center gap-x-14 gap-y-8">
+           <div className="flex flex-wrap justify-center items-center gap-x-8 sm:gap-x-14 gap-y-6 sm:gap-y-8">
              {[
               { name: "KGK Diamond",     sub: "Jaipur · Dubai · Hong Kong", logo: null,   logoH: 56 },
               { name: "Venus Jewellery", sub: "Mumbai · Antwerp",            logo: null, logoH: 44 },
@@ -928,7 +920,7 @@ export default function Home() {
                   />
                 ) : (
                   <span
-                    className="font-serif text-xl md:text-2xl"
+                    className="font-serif text-lg sm:text-xl md:text-2xl"
                     style={{ color: "#02274A", letterSpacing: "-0.01em" }}
                   >
                     {co.name}
@@ -946,21 +938,22 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           4. QUALIFIER — "What brings you here today?"
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "white" }}>
+      <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6" style={{ background: "white" }}>
         <div className="max-w-6xl mx-auto">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="mb-14">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="mb-10 sm:mb-14">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
               Find Your Answer
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl mb-3" style={{ color: "#02274A" }}>
+            <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl mb-3" style={{ color: "#02274A" }}>
               What brings you here today?
             </motion.h2>
-            <motion.p variants={up} className="text-base max-w-md" style={{ color: "rgba(2,39,74,0.5)" }}>
+            <motion.p variants={up} className="text-sm sm:text-base max-w-md" style={{ color: "rgba(2,39,74,0.5)" }}>
               Select the situation that matches yours. We'll give you the exact answer.
             </motion.p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Qualifier cards — 1 col mobile, 2 col tablet, 4 col desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {BUYER_TYPES.map((bt, i) => (
               <motion.div
                 key={bt.id}
@@ -968,7 +961,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6 }}
-                className={`qualifier-card p-8 border ${selected === bt.id ? "selected" : "border-[rgba(2,39,74,0.08)]"}`}
+                className={`qualifier-card p-6 sm:p-8 border ${selected === bt.id ? "selected" : "border-[rgba(2,39,74,0.08)]"}`}
                 style={{ background: selected === bt.id ? "rgba(28,169,201,0.08)" : "rgba(2,39,74,0.02)" }}
                 onClick={() => handleSelect(bt.id)}
                 data-testid={`qualifier-${bt.id}`}
@@ -976,11 +969,11 @@ export default function Home() {
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && handleSelect(bt.id)}
               >
-                <div className="text-3xl mb-5 leading-none font-light tabular-nums" style={{ color: "rgba(2,39,74,0.1)" }}>{bt.num}</div>
-                <h3 className="font-serif text-lg mb-3 leading-snug" style={{ color: "#02274A" }}>{bt.headline}</h3>
+                <div className="text-3xl mb-4 sm:mb-5 leading-none font-light tabular-nums" style={{ color: "rgba(2,39,74,0.1)" }}>{bt.num}</div>
+                <h3 className="font-serif text-base sm:text-lg mb-2 sm:mb-3 leading-snug" style={{ color: "#02274A" }}>{bt.headline}</h3>
                 <p className="text-xs leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>{bt.subtext}</p>
                 <div
-                  className="mt-6 flex items-center gap-2 text-[9px] uppercase tracking-wider font-medium"
+                  className="mt-5 sm:mt-6 flex items-center gap-2 text-[9px] uppercase tracking-wider font-medium"
                   style={{ color: selected === bt.id ? "#1CA9C9" : "rgba(2,39,74,0.3)" }}
                 >
                   {selected === bt.id
@@ -1002,13 +995,13 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="mt-6 p-8 md:p-12 border border-[#1CA9C9]/30"
+                  className="mt-4 sm:mt-6 p-6 sm:p-8 md:p-12 border border-[#1CA9C9]/30"
                   style={{ background: "rgba(2,39,74,0.03)" }}
                 >
-                  <div className="grid md:grid-cols-2 gap-12 items-start">
+                  <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-start">
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.3em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>Our Answer</p>
-                      <h3 className="font-serif text-2xl md:text-3xl mb-6" style={{ color: "#02274A" }}>
+                      <h3 className="font-serif text-xl sm:text-2xl md:text-3xl mb-5 sm:mb-6" style={{ color: "#02274A" }}>
                         {selectedBuyer.answer.title}
                       </h3>
                       <ul className="space-y-3">
@@ -1045,24 +1038,24 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           6. THE 4 C'S — Diamond grading criteria
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto">
 
           {/* Section header */}
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
-            className="mb-14"
+            className="mb-10 sm:mb-14"
           >
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
               The 4 C's
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl leading-tight" style={{ color: "rgba(255,255,255,0.88)" }}>
+            <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl leading-tight" style={{ color: "rgba(255,255,255,0.88)" }}>
               Every stone judged by the same uncompromising criteria.
             </motion.h2>
             <motion.div variants={up} className="mt-5"><span className="ocean-line" /></motion.div>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-14 items-start">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-14 items-start">
 
             {/* Left: Video */}
             <motion.div
@@ -1070,7 +1063,7 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: EASE }}
-              className="flex flex-col gap-6"
+              className="flex flex-col gap-5 sm:gap-6"
             >
               <div className="w-full overflow-hidden shadow-2xl" style={{ aspectRatio: "16/9", background: "#011a36" }}>
                 <iframe
@@ -1099,7 +1092,7 @@ export default function Home() {
             </motion.div>
 
             {/* Right: 4C's list */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
               {[
                 {
                   Icon: Scale,
@@ -1128,19 +1121,19 @@ export default function Home() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.65, ease: EASE }}
-                  className="flex gap-5 items-start p-5 border"
+                  className="flex gap-4 sm:gap-5 items-start p-4 sm:p-5 border"
                   style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(28,169,201,0.12)" }}
                 >
                   {/* Circular icon badge */}
                   <div
-                    className="shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
+                    className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center"
                     style={{ border: "1.5px solid rgba(28,169,201,0.25)", color: "#1CA9C9" }}
                   >
-                    <Icon size={20} strokeWidth={1.4} />
+                    <Icon size={18} strokeWidth={1.4} />
                   </div>
-                  <div className="flex flex-col gap-1.5">
-                    <h3 className="font-serif text-lg leading-snug" style={{ color: "rgba(255,255,255,0.85)" }}>{title}</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{desc}</p>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="font-serif text-base sm:text-lg leading-snug" style={{ color: "rgba(255,255,255,0.85)" }}>{title}</h3>
+                    <p className="text-xs sm:text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1153,30 +1146,30 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           IF → FL EXPERTISE
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "white" }}>
+      <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6" style={{ background: "white" }}>
         <div className="max-w-7xl mx-auto">
 
           {/* Header row */}
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
-            className="grid lg:grid-cols-2 gap-16 items-end mb-16 md:mb-20"
+            className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-end mb-12 sm:mb-16 md:mb-20"
           >
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
                 IF→FL Conversion
               </motion.p>
-              <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl lg:text-6xl leading-none" style={{ color: "#02274A" }}>
+              <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none" style={{ color: "#02274A" }}>
                 Unlock hidden value<br />in your IF stone.
               </motion.h2>
               <motion.div variants={up}><span className="ocean-line" /></motion.div>
             </div>
-            <motion.div variants={up} className="space-y-6">
+            <motion.div variants={up} className="space-y-5 sm:space-y-6">
               <p className="text-sm sm:text-base leading-relaxed font-light" style={{ color: "rgba(2,39,74,0.55)" }}>
                 When a GIA certificate notes specific surface characteristics on an Internally Flawless
                 stone, there is often a viable path to Flawless grade — without leaving the same carat weight bracket.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 pt-1">
-                <Link href="/investment" className="block">
+                <Link href="/investment" className="block w-full sm:w-auto">
                   <Button
                     className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
                     style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
@@ -1185,7 +1178,7 @@ export default function Home() {
                     How It Works
                   </Button>
                 </Link>
-                <Link href="/contact" className="block">
+                <Link href="/contact" className="block w-full sm:w-auto">
                   <Button
                     variant="outline"
                     className="rounded-none text-xs uppercase tracking-[0.18em] hover:bg-[#02274A]/5 w-full sm:w-auto"
@@ -1207,7 +1200,8 @@ export default function Home() {
               style={{ background: "linear-gradient(90deg, transparent, rgba(28,169,201,0.3) 15%, rgba(28,169,201,0.3) 85%, transparent)" }}
             />
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(2,39,74,0.06)" }}>
+            {/* Steps: 1 col mobile, 2 col tablet, 4 col desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(2,39,74,0.06)" }}>
               {[
                 {
                   n: "01",
@@ -1240,7 +1234,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ delay: i * 0.15, duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
-                  className="p-7 md:p-9 flex flex-col gap-4"
+                  className="p-6 sm:p-7 md:p-9 flex flex-col gap-4"
                   style={{ background: "white" }}
                 >
                   {/* Step number with dot */}
@@ -1269,7 +1263,7 @@ export default function Home() {
           {/* Value teaser */}
           <motion.p
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-center text-[11px] italic mt-8 font-light"
+            className="text-center text-[11px] italic mt-6 sm:mt-8 font-light"
             style={{ color: "rgba(2,39,74,0.35)" }}
           >
             Ask us about your stone's potential — assessment is always free.
@@ -1281,24 +1275,25 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           7. THREE SERVICES
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={stagger}
-            className="mb-16"
+            className="mb-12 sm:mb-16"
           >
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4" style={{ color: "#1CA9C9" }}>
               Our Services
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white">
+            <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl text-white">
               Three ways we work with you.
             </motion.h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.05)" }}>
+          {/* Services: 1 col mobile, 3 col desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.05)" }}>
             {[
               {
                 num: "01",
@@ -1331,14 +1326,14 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.18, duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
-                className="p-10 flex flex-col gap-5 group cursor-default transition-colors"
+                className="p-8 sm:p-10 flex flex-col gap-5 group cursor-default transition-colors"
                 style={{ background: "#02274A" }}
                 onMouseEnter={e => (e.currentTarget.style.background = "#04385E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#02274A")}
               >
                 <span className="text-4xl font-light tabular-nums" style={{ color: "#1CA9C9", opacity: 0.4 }}>{svc.num}</span>
                 <div className="flex-1 flex flex-col gap-4">
-                  <h3 className="font-serif text-2xl text-white">{svc.title}</h3>
+                  <h3 className="font-serif text-xl sm:text-2xl text-white">{svc.title}</h3>
                   {/* Stone-type / category chips */}
                   <div className="flex flex-wrap gap-1.5">
                     {svc.tags.map((tag, j) => (
@@ -1373,16 +1368,16 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           8. FEATURED INVENTORY
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6" style={{ background: "white" }}>
+      <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6" style={{ background: "white" }}>
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 sm:mb-14 gap-4">
             <div>
               <ScrollReveal delay={0}>
                 <p className="text-[10px] uppercase tracking-[0.35em] mb-2 font-medium" style={{ color: "#1CA9C9" }}>
                   By Application Only
                 </p>
               </ScrollReveal>
-              <ViewportWordReveal text="Featured Inventory" className="font-serif text-4xl" style={{ color: "#02274A" }} />
+              <ViewportWordReveal text="Featured Inventory" className="font-serif text-3xl sm:text-4xl" style={{ color: "#02274A" }} />
             </div>
             <ScrollReveal delay={0.2}>
               <Link href="/diamonds" className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-medium transition-colors" style={{ color: "rgba(2,39,74,0.4)" }}>
@@ -1391,7 +1386,7 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          <StaggerGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
               { id: 1, shape: "Round Brilliant",    image: "/diamond-3.png", carat: "2.01", color: "D", clarity: "FL",   cut: "Excellent" },
               { id: 2, shape: "Oval Cut",           image: "/diamond-3.png", carat: "1.52", color: "E", clarity: "IF",   cut: "Excellent" },
@@ -1416,21 +1411,22 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           9. WHY FLXDIAMONDS
       ══════════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-6 border-t border-[rgba(28,169,201,0.12)]" style={{ background: "#02274A" }}>
+      <section className="py-16 sm:py-20 md:py-28 px-4 sm:px-6 border-t border-[rgba(28,169,201,0.12)]" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
-            className="mb-14"
+            className="mb-10 sm:mb-14"
           >
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
               Our Difference
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl" style={{ color: "rgba(255,255,255,0.88)" }}>
+            <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl" style={{ color: "rgba(255,255,255,0.88)" }}>
               Why FLXDIAMONDS.
             </motion.h2>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(28,169,201,0.08)" }}>
+          {/* Why cards: 1 col mobile, 2 col tablet, 4 col desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "rgba(28,169,201,0.08)" }}>
             {[
               {
                 Icon: Award,
@@ -1463,19 +1459,19 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.13, duration: 0.95, ease: [0.76, 0, 0.24, 1] }}
-                className="p-9 flex flex-col gap-5 group"
+                className="p-7 sm:p-9 flex flex-col gap-5 group"
                 style={{ background: "rgba(255,255,255,0.03)" }}
               >
                 {/* Icon */}
                 <div
-                  className="w-11 h-11 flex items-center justify-center shrink-0"
+                  className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0"
                   style={{ background: "rgba(28,169,201,0.07)", border: "1px solid rgba(28,169,201,0.18)" }}
                 >
                   <Icon size={18} style={{ color: "#1CA9C9" }} strokeWidth={1.5} />
                 </div>
 
                 <div className="flex flex-col gap-2 flex-1">
-                  <h3 className="font-serif text-xl" style={{ color: "rgba(255,255,255,0.85)" }}>{title}</h3>
+                  <h3 className="font-serif text-lg sm:text-xl" style={{ color: "rgba(255,255,255,0.85)" }}>{title}</h3>
                   <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{body}</p>
                 </div>
 
@@ -1494,32 +1490,41 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           9b. SOCIAL PROOF — Anonymised testimonials
       ══════════════════════════════════════════════════ */}
-      <section className="py-24 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-16 sm:py-24 px-4 sm:px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
-            className="mb-14 text-center"
+            className="mb-10 sm:mb-14 text-center"
           >
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
               From Our Partners
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl" style={{ color: "#02274A" }}>
+            <motion.h2 variants={up} className="font-serif text-3xl sm:text-4xl md:text-5xl" style={{ color: "#02274A" }}>
               What the trade says.
             </motion.h2>
           </motion.div>
 
-          <TestimonialSlider />
+          {/* Testimonial slider: add side padding on mobile so arrows don't overlap content */}
+          <div className="px-0 md:px-16">
+            <TestimonialSlider />
+          </div>
 
           <motion.p
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.7 }}
-            className="text-center mt-10 text-[9px] uppercase tracking-[0.3em]"
+            className="text-center mt-8 sm:mt-10 text-[9px] uppercase tracking-[0.3em]"
             style={{ color: "rgba(2,39,74,0.35)" }}
           >
             All testimonials are anonymised by request. Full references available to verified trade partners.
           </motion.p>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════════════
+          FAQ
+      ══════════════════════════════════════════════════ */}
+      <FaqSection />
+
       {/* ══════════════════════════════════════════════════
           11. CLOSING — Ocean panorama + CTA
       ══════════════════════════════════════════════════ */}
@@ -1535,18 +1540,18 @@ export default function Home() {
         </ParallaxLayer>
         <div className="absolute inset-0" style={{ background: "rgba(2,39,74,0.5)" }} />
 
-        <div className="absolute inset-0 flex items-center justify-center px-8">
+        <div className="absolute inset-0 flex items-center justify-center px-5 sm:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={stagger}
-            className="text-center space-y-7 max-w-3xl"
+            className="text-center space-y-5 sm:space-y-7 max-w-3xl"
           >
             <motion.p variants={up} className="text-[9px] uppercase tracking-[0.45em]" style={{ color: "#1CA9C9" }}>
               Precision. Trust. Excellence.
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-3xl md:text-5xl text-white leading-snug">
+            <motion.h2 variants={up} className="font-serif text-2xl sm:text-3xl md:text-5xl text-white leading-snug">
               "The finest diamonds are not found.<br />
               They are understood."
             </motion.h2>
@@ -1557,8 +1562,8 @@ export default function Home() {
               <Link href="/contact">
                 <Button
                   variant="outline"
-                  className="rounded-none text-xs uppercase tracking-[0.22em] font-medium text-white hover:bg-white/10"
-                  style={{ borderColor: "rgba(255,255,255,0.4)", height: "52px", padding: "0 2.5rem" }}
+                  className="rounded-none text-xs uppercase tracking-[0.18em] sm:tracking-[0.22em] font-medium text-white hover:bg-white/10 w-full sm:w-auto"
+                  style={{ borderColor: "rgba(255,255,255,0.4)", height: "52px", padding: "0 2rem sm:2.5rem" }}
                   data-testid="btn-closing-contact"
                 >
                   Begin the Conversation →
