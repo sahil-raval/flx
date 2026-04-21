@@ -188,11 +188,15 @@ function FaqSection() {
 }
 
 /* ── Motion presets ─────────────────────────────────── */
-const up = {
+
+
+import {   type Variants } from "framer-motion";
+
+const up: Variants = {
   hidden:  { opacity: 0, y: 64 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1.0, ease: [0.76, 0, 0.24, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 1.0, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] } }
 };
-const stagger = {
+const stagger: Variants = {
   hidden:  {},
   visible: { transition: { staggerChildren: 0.14, delayChildren: 0.05 } }
 };
