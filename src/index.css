@@ -150,7 +150,15 @@
   animation: wave-swell ease-in-out infinite;
   will-change: transform;
 }
+/* in your global CSS (e.g. index.css) */
+@keyframes flx-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
+.marquee-pause-hover:hover {
+  animation-play-state: paused;
+}
 /* Floating teal bubbles / particles */
 .particle {
   position: absolute;
