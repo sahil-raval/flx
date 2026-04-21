@@ -15,11 +15,12 @@ interface WordRevealProps {
   className?: string;
   delay?: number;
   as?: "h1" | "h2" | "span";
+  style?: React.CSSProperties;
 }
 function WordReveal({ text, className = "", delay = 0, as: Tag = "span" }: WordRevealProps) {
   const words = text.split(" ");
   return (
-    <Tag className={className}>
+    <Tag className={className} style={style}>
       {words.map((word, i) => (
         <span key={i} className="word-mask" style={{ marginRight: "0.28em" }}>
           <motion.span
@@ -42,7 +43,7 @@ function ViewportWordReveal({ text, className = "", delay = 0, as: Tag = "h2" }:
   const inView = useInView(ref as React.RefObject<Element>, { once: true, margin: "-80px" });
   const words = text.split(" ");
   return (
-    <Tag ref={ref as any} className={className}>
+    <Tag ref={ref as any} className={className} style={style}>
       {words.map((word, i) => (
         <span key={i} className="word-mask" style={{ marginRight: "0.28em" }}>
           <motion.span
@@ -1381,7 +1382,7 @@ export default function Home() {
                   By Application Only
                 </p>
               </ScrollReveal>
-              <ViewportWordReveal text="Featured Inventory" className="font-serif text-3xl sm:text-4xl" style={{ color: "#02274A" }} />
+              <ViewportWordReveal text="Featured Inventory" className="font-serif text-3xl sm:text-4xl" style={{ color: "#02274A" }} as="h2" />
             </div>
             <ScrollReveal delay={0.2}>
               <Link href="/diamonds" className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-medium transition-colors" style={{ color: "rgba(2,39,74,0.4)" }}>
