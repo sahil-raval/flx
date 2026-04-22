@@ -1,4 +1,4 @@
-  import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
   import { motion, AnimatePresence } from "framer-motion";
   import { Link } from "wouter";
   import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -6,41 +6,52 @@
   import { Button } from "@/components/ui/button";
   
   /* ── Types ─────────────────────────────────────────────── */
-  type Category = "natural" | "lab" | "custom";
+  type Category = "natural" | "lab" | "loose" | "custom";
+
+  type Certification = "GIA" | "IGI" | "None";
   
   interface Diamond {
-    id: number; stockId: string; type: "natural" | "lab";
+    id: number; stockId: string; type: "natural" | "lab" | "loose";
     shape: string; carat: number; color: string; clarity: string;
     cut: string; polish: string; symmetry: string; fluorescence: string;
-    measurements: string; image: string;
+    measurements: string; image: string; certification: Certification;
   }
   
   /* ── Inventory ─────────────────────────────────────────── */
   const DIAMONDS: Diamond[] = [
-    { id:  1, stockId:"FLX-N-001", type:"natural", shape:"Round",    carat:1.52, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"7.35×7.38×4.52 mm", image:"/diamond-1.png" },
-    { id:  2, stockId:"FLX-N-002", type:"natural", shape:"Oval",     carat:2.01, color:"E", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"10.35×7.42×4.49 mm", image:"/diamond-2.png" },
-    { id:  3, stockId:"FLX-N-003", type:"natural", shape:"Emerald",  carat:3.15, color:"F", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"10.52×7.68×4.82 mm", image:"/diamond-3.png" },
-    { id:  4, stockId:"FLX-N-004", type:"natural", shape:"Pear",     carat:1.80, color:"G", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Very Good", fluorescence:"Faint", measurements:"10.22×6.51×3.98 mm", image:"/diamond-4.png" },
-    { id:  5, stockId:"FLX-N-005", type:"natural", shape:"Princess", carat:1.22, color:"D", clarity:"IF",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"5.51×5.48×3.72 mm",  image:"/diamond-5.png" },
-    { id:  6, stockId:"FLX-N-006", type:"natural", shape:"Cushion",  carat:2.42, color:"E", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"8.52×7.94×5.08 mm",  image:"/diamond-6.png" },
-    { id:  7, stockId:"FLX-N-007", type:"natural", shape:"Marquise", carat:1.65, color:"F", clarity:"VS1",  cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"13.12×6.85×4.05 mm", image:"/diamond-1.png" },
-    { id:  8, stockId:"FLX-N-008", type:"natural", shape:"Radiant",  carat:3.02, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"9.52×8.88×5.72 mm",  image:"/diamond-2.png" },
-    { id:  9, stockId:"FLX-N-009", type:"natural", shape:"Asscher",  carat:2.15, color:"E", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"7.42×7.38×4.84 mm",  image:"/diamond-3.png" },
-    { id: 10, stockId:"FLX-N-010", type:"natural", shape:"Heart",    carat:1.45, color:"G", clarity:"VS1",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"Faint", measurements:"7.88×8.12×4.82 mm",  image:"/diamond-4.png" },
-    { id: 11, stockId:"FLX-N-011", type:"natural", shape:"Round",    carat:3.05, color:"D", clarity:"IF",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"9.18×9.22×5.58 mm",  image:"/diamond-5.png" },
-    { id: 12, stockId:"FLX-N-012", type:"natural", shape:"Oval",     carat:1.48, color:"E", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"9.82×6.85×4.12 mm",  image:"/diamond-6.png" },
-    { id: 13, stockId:"FLX-N-013", type:"natural", shape:"Triangle", carat:0.85, color:"F", clarity:"VS2",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"None",  measurements:"6.22×6.18×3.28 mm",  image:"/diamond-1.png" },
-    { id: 14, stockId:"FLX-N-014", type:"natural", shape:"Cushion",  carat:1.92, color:"D", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"7.78×7.62×4.92 mm",  image:"/diamond-2.png" },
-    { id: 15, stockId:"FLX-N-015", type:"natural", shape:"Pear",     carat:2.88, color:"E", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"12.42×8.15×4.98 mm", image:"/diamond-3.png" },
-    { id: 16, stockId:"FLX-N-016", type:"natural", shape:"Radiant",  carat:1.78, color:"F", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"Faint", measurements:"7.42×6.88×4.72 mm",  image:"/diamond-4.png" },
-    { id: 17, stockId:"FLX-L-001", type:"lab",     shape:"Round",    carat:2.50, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"8.72×8.75×5.28 mm",  image:"/diamond-5.png" },
-    { id: 18, stockId:"FLX-L-002", type:"lab",     shape:"Cushion",  carat:4.00, color:"E", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"9.42×8.52×6.12 mm",  image:"/diamond-6.png" },
-    { id: 19, stockId:"FLX-L-003", type:"lab",     shape:"Round",    carat:1.05, color:"F", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"6.48×6.52×3.92 mm",  image:"/diamond-1.png" },
-    { id: 20, stockId:"FLX-L-004", type:"lab",     shape:"Oval",     carat:1.75, color:"D", clarity:"VS1",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"Faint", measurements:"10.08×7.12×4.32 mm", image:"/diamond-2.png" },
-    { id: 21, stockId:"FLX-L-005", type:"lab",     shape:"Radiant",  carat:2.85, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"9.22×8.52×5.68 mm",  image:"/diamond-3.png" },
-    { id: 22, stockId:"FLX-L-006", type:"lab",     shape:"Princess", carat:1.58, color:"E", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"6.12×6.08×4.18 mm",  image:"/diamond-4.png" },
-    { id: 23, stockId:"FLX-L-007", type:"lab",     shape:"Emerald",  carat:3.42, color:"F", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"11.02×7.85×4.98 mm", image:"/diamond-5.png" },
-    { id: 24, stockId:"FLX-L-008", type:"lab",     shape:"Pear",     carat:2.18, color:"D", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",  measurements:"11.52×7.12×4.38 mm", image:"/diamond-6.png" },
+    { id:  1, stockId:"FLX-N-001", type:"natural", shape:"Round",    carat:1.52, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"7.35×7.38×4.52 mm",  image:"/diamond-1.png", certification:"GIA" },
+    { id:  2, stockId:"FLX-N-002", type:"natural", shape:"Oval",     carat:2.01, color:"E", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"10.35×7.42×4.49 mm", image:"/diamond-2.png", certification:"GIA" },
+    { id:  3, stockId:"FLX-N-003", type:"natural", shape:"Emerald",  carat:3.15, color:"F", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"10.52×7.68×4.82 mm", image:"/diamond-3.png", certification:"GIA" },
+    { id:  4, stockId:"FLX-N-004", type:"natural", shape:"Pear",     carat:1.80, color:"G", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Very Good", fluorescence:"Faint",  measurements:"10.22×6.51×3.98 mm", image:"/diamond-4.png", certification:"GIA" },
+    { id:  5, stockId:"FLX-N-005", type:"natural", shape:"Princess", carat:1.22, color:"D", clarity:"IF",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"5.51×5.48×3.72 mm",  image:"/diamond-5.png", certification:"GIA" },
+    { id:  6, stockId:"FLX-N-006", type:"natural", shape:"Cushion",  carat:2.42, color:"E", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"8.52×7.94×5.08 mm",  image:"/diamond-6.png", certification:"GIA" },
+    { id:  7, stockId:"FLX-N-007", type:"natural", shape:"Marquise", carat:1.65, color:"F", clarity:"VS1",  cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"13.12×6.85×4.05 mm", image:"/diamond-1.png", certification:"GIA" },
+    { id:  8, stockId:"FLX-N-008", type:"natural", shape:"Radiant",  carat:3.02, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"9.52×8.88×5.72 mm",  image:"/diamond-2.png", certification:"GIA" },
+    { id:  9, stockId:"FLX-N-009", type:"natural", shape:"Asscher",  carat:2.15, color:"E", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"7.42×7.38×4.84 mm",  image:"/diamond-3.png", certification:"IGI" },
+    { id: 10, stockId:"FLX-N-010", type:"natural", shape:"Heart",    carat:1.45, color:"G", clarity:"VS1",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"Faint",  measurements:"7.88×8.12×4.82 mm",  image:"/diamond-4.png", certification:"IGI" },
+    { id: 11, stockId:"FLX-N-011", type:"natural", shape:"Round",    carat:3.05, color:"D", clarity:"IF",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"9.18×9.22×5.58 mm",  image:"/diamond-5.png", certification:"GIA" },
+    { id: 12, stockId:"FLX-N-012", type:"natural", shape:"Oval",     carat:1.48, color:"E", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"9.82×6.85×4.12 mm",  image:"/diamond-6.png", certification:"GIA" },
+    { id: 13, stockId:"FLX-N-013", type:"natural", shape:"Triangle", carat:0.85, color:"F", clarity:"VS2",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"None",   measurements:"6.22×6.18×3.28 mm",  image:"/diamond-1.png", certification:"IGI" },
+    { id: 14, stockId:"FLX-N-014", type:"natural", shape:"Cushion",  carat:1.92, color:"D", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"7.78×7.62×4.92 mm",  image:"/diamond-2.png", certification:"GIA" },
+    { id: 15, stockId:"FLX-N-015", type:"natural", shape:"Pear",     carat:2.88, color:"E", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"12.42×8.15×4.98 mm", image:"/diamond-3.png", certification:"GIA" },
+    { id: 16, stockId:"FLX-N-016", type:"natural", shape:"Radiant",  carat:1.78, color:"F", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"Faint",  measurements:"7.42×6.88×4.72 mm",  image:"/diamond-4.png", certification:"IGI" },
+    { id: 17, stockId:"FLX-L-001", type:"lab",     shape:"Round",    carat:2.50, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"8.72×8.75×5.28 mm",  image:"/diamond-5.png", certification:"IGI" },
+    { id: 18, stockId:"FLX-L-002", type:"lab",     shape:"Cushion",  carat:4.00, color:"E", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"9.42×8.52×6.12 mm",  image:"/diamond-6.png", certification:"IGI" },
+    { id: 19, stockId:"FLX-L-003", type:"lab",     shape:"Round",    carat:1.05, color:"F", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"6.48×6.52×3.92 mm",  image:"/diamond-1.png", certification:"IGI" },
+    { id: 20, stockId:"FLX-L-004", type:"lab",     shape:"Oval",     carat:1.75, color:"D", clarity:"VS1",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"Faint",  measurements:"10.08×7.12×4.32 mm", image:"/diamond-2.png", certification:"IGI" },
+    { id: 21, stockId:"FLX-L-005", type:"lab",     shape:"Radiant",  carat:2.85, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"9.22×8.52×5.68 mm",  image:"/diamond-3.png", certification:"IGI" },
+    { id: 22, stockId:"FLX-L-006", type:"lab",     shape:"Princess", carat:1.58, color:"E", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"6.12×6.08×4.18 mm",  image:"/diamond-4.png", certification:"IGI" },
+    { id: 23, stockId:"FLX-L-007", type:"lab",     shape:"Emerald",  carat:3.42, color:"F", clarity:"VVS1", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"11.02×7.85×4.98 mm", image:"/diamond-5.png", certification:"IGI" },
+    { id: 24, stockId:"FLX-L-008", type:"lab",     shape:"Pear",     carat:2.18, color:"D", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"11.52×7.12×4.38 mm", image:"/diamond-6.png", certification:"IGI" },
+    /* ── Loose diamonds (no certification) ── */
+    { id: 25, stockId:"FLX-S-001", type:"loose",   shape:"Round",    carat:0.75, color:"G", clarity:"VS2",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"Medium", measurements:"5.88×5.92×3.58 mm",  image:"/diamond-1.png", certification:"None" },
+    { id: 26, stockId:"FLX-S-002", type:"loose",   shape:"Round",    carat:5.10, color:"H", clarity:"SI1",  cut:"Good",      polish:"Good",        symmetry:"Good",       fluorescence:"Strong", measurements:"11.12×11.18×6.72 mm",image:"/diamond-2.png", certification:"None" },
+    { id: 27, stockId:"FLX-S-003", type:"loose",   shape:"Oval",     carat:3.62, color:"I", clarity:"SI2",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"BGM",    measurements:"12.28×8.82×5.32 mm", image:"/diamond-3.png", certification:"None" },
+    { id: 28, stockId:"FLX-S-004", type:"loose",   shape:"Princess", carat:8.50, color:"J", clarity:"I1",   cut:"Good",      polish:"Good",        symmetry:"Good",       fluorescence:"BGM",    measurements:"12.48×12.38×8.22 mm",image:"/diamond-4.png", certification:"None" },
+    { id: 29, stockId:"FLX-S-005", type:"loose",   shape:"Cushion",  carat:12.25,color:"F", clarity:"VS1",  cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"15.52×14.88×9.42 mm",image:"/diamond-5.png", certification:"None" },
+    { id: 30, stockId:"FLX-S-006", type:"loose",   shape:"Radiant",  carat:18.80,color:"D", clarity:"VVS1", cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"19.82×17.92×11.48 mm",image:"/diamond-6.png", certification:"None" },
+    { id: 31, stockId:"FLX-S-007", type:"loose",   shape:"Emerald",  carat:6.45, color:"E", clarity:"VVS2", cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"Faint",  measurements:"13.82×10.22×6.48 mm",image:"/diamond-1.png", certification:"None" },
+    { id: 32, stockId:"FLX-S-008", type:"loose",   shape:"Pear",     carat:9.30, color:"G", clarity:"VS2",  cut:"Very Good", polish:"Very Good",  symmetry:"Very Good",  fluorescence:"Medium", measurements:"18.42×11.82×7.12 mm",image:"/diamond-2.png", certification:"None" },
   ];
   
   /* ── Shape data with SVG paths ──────────────────────────── */
@@ -63,6 +74,15 @@
   const COLOR_GRADES   = ["D","E","F","G","H","I","J","K"];
   const CLARITIES      = ["All","FL","IF","VVS1","VVS2","VS1","VS2","SI1","SI2","I1","I2"];
   const CUTS           = ["All","Ideal","Excellent","Very Good","Good"];
+  /* ── NEW: Fluorescence options including BGM ── */
+  const FLUORESCENCE_OPTIONS = ["All", "None", "Faint", "Medium", "Strong", "BGM"];
+  /* ── NEW: Certification options ── */
+  const CERTIFICATION_OPTIONS: Array<{ value: Certification | "All"; label: string }> = [
+    { value: "All",  label: "All" },
+    { value: "GIA",  label: "GIA" },
+    { value: "IGI",  label: "IGI" },
+    { value: "None", label: "No Certificate" },
+  ];
   
   const COLOR_TINT: Record<string, string> = {
     D:"#ECF7FF", E:"#F4F4FF", F:"#F8FFF5", G:"#FFFEF0",
@@ -92,6 +112,15 @@
   }
   function matchesCarat(d: Diamond, min: number, max: number) {
     return d.carat >= min && d.carat <= max;
+  }
+  /* ── NEW matchers ── */
+  function matchesFluorescence(d: Diamond, filter: string) {
+    if (filter === "All") return true;
+    return d.fluorescence === filter;
+  }
+  function matchesCertification(d: Diamond, filter: string) {
+    if (filter === "All") return true;
+    return d.certification === filter;
   }
   
   /* ── Shape Icon button ────────────────────────────────────── */
@@ -277,7 +306,7 @@
     );
   }
   
-  /* ── Pill button (clarity/cut) ────────────────────────────── */
+  /* ── Pill button (clarity/cut/fluorescence/cert) ─────────── */
   function Pill({ label, active, onClick, flx }: { label: string; active: boolean; onClick: () => void; flx?: boolean }) {
     const isFlx = flx && !active;
     return (
@@ -295,10 +324,50 @@
       </button>
     );
   }
+
+  /* ── BGM warning pill ─────────────────────────────────────── */
+  function BgmPill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+    const isBgm = label === "BGM";
+    return (
+      <button
+        onClick={onClick}
+        className="shrink-0 text-[9px] uppercase tracking-[0.18em] px-4 py-1.5 transition-all font-medium"
+        style={{
+          borderRadius: "9999px",
+          background: active ? (isBgm ? "#4A5568" : "#1CA9C9") : isBgm ? "rgba(74,85,104,0.12)" : "rgba(255,255,255,0.05)",
+          color: active ? "white" : isBgm ? "rgba(180,190,210,0.75)" : "rgba(255,255,255,0.5)",
+          border: `1px solid ${active ? (isBgm ? "#4A5568" : "#1CA9C9") : isBgm ? "rgba(74,85,104,0.45)" : "rgba(255,255,255,0.12)"}`,
+        }}
+      >
+        {label}{isBgm && !active ? " ◈" : ""}
+      </button>
+    );
+  }
+
+  /* ── Certification pill ───────────────────────────────────── */
+  function CertPill({ value, label, active, onClick }: { value: string; label: string; active: boolean; onClick: () => void }) {
+    const isNone = value === "None";
+    return (
+      <button
+        onClick={onClick}
+        className="shrink-0 text-[9px] uppercase tracking-[0.18em] px-4 py-1.5 transition-all font-medium"
+        style={{
+          borderRadius: "9999px",
+          background: active ? "#1CA9C9" : isNone ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.05)",
+          color: active ? "white" : isNone ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.5)",
+          border: `1px solid ${active ? "#1CA9C9" : isNone ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.12)"}`,
+          fontStyle: isNone && !active ? "italic" : "normal",
+        }}
+      >
+        {label}
+      </button>
+    );
+  }
   
   /* ── Premium Stone Card ───────────────────────────────────── */
   function StoneCard({ diamond, onRequest }: { diamond: Diamond; onRequest: () => void }) {
     const isFLX  = FLX_GRADES.has(diamond.clarity);
+    const isBGM  = diamond.fluorescence === "BGM";
     const cardRef = useRef<HTMLDivElement>(null);
     const [tilt, setTilt] = useState({ x: 0, y: 0 });
   
@@ -311,6 +380,11 @@
     };
   
     const handleMouseLeave = () => setTilt({ x: 0, y: 0 });
+
+    /* cert badge colors */
+    const certColor = diamond.certification === "GIA" ? "#1CA9C9" : diamond.certification === "IGI" ? "#8B5CF6" : "rgba(255,255,255,0.25)";
+    const certBg    = diamond.certification === "GIA" ? "rgba(28,169,201,0.12)" : diamond.certification === "IGI" ? "rgba(139,92,246,0.12)" : "rgba(255,255,255,0.04)";
+    const certBorder= diamond.certification === "GIA" ? "rgba(28,169,201,0.4)"  : diamond.certification === "IGI" ? "rgba(139,92,246,0.4)"  : "rgba(255,255,255,0.1)";
   
     return (
       <motion.div
@@ -328,7 +402,7 @@
           willChange: "transform",
         }}
       >
-        {/* Top bar: stock ID + GIA */}
+        {/* Top bar: stock ID + certification badge */}
         <div
           className="flex items-center justify-between px-4 py-2.5"
           style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
@@ -337,10 +411,26 @@
             {diamond.stockId}
           </span>
           <div className="flex items-center gap-1.5">
-            <img src="/gia-logo.png" alt="GIA" style={{ width: "16px", height: "16px", objectFit: "contain", opacity: 0.9, mixBlendMode: "screen" }} />
-            <span className="text-[8px] font-semibold uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.4)" }}>
-              GIA Certified
-            </span>
+            {diamond.certification !== "None" ? (
+              <>
+                {diamond.certification === "GIA" && (
+                  <img src="/gia-logo.png" alt="GIA" style={{ width: "16px", height: "16px", objectFit: "contain", opacity: 0.9, mixBlendMode: "screen" }} />
+                )}
+                <span
+                  className="text-[8px] font-semibold uppercase tracking-[0.3em] px-2 py-0.5"
+                  style={{ background: certBg, border: `1px solid ${certBorder}`, color: certColor, borderRadius: "4px" }}
+                >
+                  {diamond.certification} Certified
+                </span>
+              </>
+            ) : (
+              <span
+                className="text-[8px] font-medium uppercase tracking-[0.22em] px-2 py-0.5"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.3)", borderRadius: "4px", fontStyle: "italic" }}
+              >
+                No Certificate
+              </span>
+            )}
           </div>
         </div>
   
@@ -367,6 +457,18 @@
             >
               <span className="text-[7px] uppercase tracking-[0.35em] font-semibold" style={{ color: "#1CA9C9" }}>
                 IF→FL ✦
+              </span>
+            </div>
+          )}
+
+          {/* BGM warning badge */}
+          {isBGM && (
+            <div
+              className="absolute bottom-3 left-3 px-2 py-0.5"
+              style={{ background: "rgba(74,85,104,0.25)", border: "1px solid rgba(74,85,104,0.55)" }}
+            >
+              <span className="text-[7px] uppercase tracking-[0.3em] font-semibold" style={{ color: "rgba(180,190,210,0.85)" }}>
+                BGM ◈
               </span>
             </div>
           )}
@@ -452,7 +554,12 @@
             </div>
             <div className="flex items-center justify-between">
               <span className="text-[9px] uppercase tracking-[0.25em]" style={{ color: "rgba(255,255,255,0.28)" }}>Fluorescence</span>
-              <span className="font-mono text-[10px]" style={{ color: "rgba(255,255,255,0.58)" }}>{diamond.fluorescence}</span>
+              <span
+                className="font-mono text-[10px]"
+                style={{ color: isBGM ? "rgba(180,190,210,0.75)" : "rgba(255,255,255,0.58)" }}
+              >
+                {diamond.fluorescence}{isBGM ? " ◈" : ""}
+              </span>
             </div>
           </div>
   
@@ -509,11 +616,17 @@
     const [clarity,     setClarity]     = useState("All");
     const [cut,         setCut]         = useState("All");
     const [caratMin,    setCaratMin]    = useState(0.5);
-    const [caratMax,    setCaratMax]    = useState(5.0);
+    const [caratMax,    setCaratMax]    = useState(20.0);
     const [sortKey,     setSortKey]     = useState<SortKey>("default");
     const [selectedDiamond, setSelectedDiamond] = useState<Diamond | null>(null);
     const [gridCols, setGridCols] = useState<2 | 3>(3);
-  
+    /* ── NEW filter states ── */
+    const [fluorFilter, setFluorFilter] = useState("All");
+    const [certFilter,  setCertFilter]  = useState("All");
+
+    /* Dynamic carat max for loose vs others */
+    const caratRangeMax = category === "loose" ? 20 : 10;
+
     const filtered = useMemo(() => {
       if (category === "custom") return [];
       const base = DIAMONDS.filter(d => {
@@ -523,16 +636,19 @@
         if (!matchesClarity(d, clarity)) return false;
         if (!matchesCut(d, cut)) return false;
         if (!matchesCarat(d, caratMin, caratMax)) return false;
+        if (!matchesFluorescence(d, fluorFilter)) return false;
+        if (!matchesCertification(d, certFilter)) return false;
         return true;
       });
       return sortDiamonds(base, sortKey);
-    }, [category, shape, colorFilter, clarity, cut, caratMin, caratMax, sortKey]);
+    }, [category, shape, colorFilter, clarity, cut, caratMin, caratMax, sortKey, fluorFilter, certFilter]);
   
-    const hasFilters = shape !== "All" || colorFilter !== "All" || clarity !== "All" || cut !== "All";
+    const hasFilters = shape !== "All" || colorFilter !== "All" || clarity !== "All" || cut !== "All" || fluorFilter !== "All" || certFilter !== "All";
   
     const resetFilters = () => {
       setShape("All"); setColorFilter("All"); setClarity("All"); setCut("All");
-      setCaratMin(0.5); setCaratMax(5.0);
+      setCaratMin(0.5); setCaratMax(20.0);
+      setFluorFilter("All"); setCertFilter("All");
     };
   
     const gridClass = gridCols === 2
@@ -562,13 +678,13 @@
         {/* ── Category tabs ── */}
         <div style={{ background: "#02274A", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="max-w-7xl mx-auto px-8 md:px-14 lg:px-20 flex overflow-x-auto">
-            {(["natural","lab","custom"] as Category[]).map(cat => {
-              const labels = { natural:"Natural Diamonds", lab:"Lab-Grown Diamonds", custom:"Customised" };
+            {(["natural","lab","loose","custom"] as Category[]).map(cat => {
+              const labels = { natural:"Natural Diamonds", lab:"Lab-Grown Diamonds", loose:"Loose Diamonds", custom:"Customised" };
               const active = category === cat;
               return (
                 <button
                   key={cat}
-                  onClick={() => setCategory(cat)}
+                  onClick={() => { setCategory(cat); resetFilters(); }}
                   className="shrink-0 px-6 py-4 text-[11px] uppercase tracking-[0.35em] font-medium transition-all relative"
                   style={{ color: active ? "white" : "rgba(255,255,255,0.35)" }}
                   data-testid={`tab-${cat}`}
@@ -610,9 +726,24 @@
                       {CUTS.map(c => <Pill key={c} label={c} active={cut === c} onClick={() => setCut(c)} />)}
                     </div>
                   </div>
+
+                  {/* ── NEW: Fluorescence / BGM ── */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <p className="text-[8px] uppercase tracking-[0.45em] font-semibold" style={{ color: "rgba(255,255,255,0.28)" }}>Fluorescence</p>
+                      <span className="text-[7px] px-2 py-0.5 font-medium" style={{ background:"rgba(74,85,104,0.12)", color:"rgba(180,190,210,0.7)", border:"1px solid rgba(74,85,104,0.3)", borderRadius:"9999px" }}>
+                        BGM = Brown · Grey · Milky
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {FLUORESCENCE_OPTIONS.map(f => (
+                        <BgmPill key={f} label={f} active={fluorFilter === f} onClick={() => setFluorFilter(f)} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
   
-                {/* RIGHT: Clarity + Color */}
+                {/* RIGHT: Clarity + Color + Certification */}
                 <div className="flex flex-col gap-7">
                   {/* Clarity */}
                   <div>
@@ -653,12 +784,36 @@
                       <span className="text-[8px]" style={{ color:"rgba(255,255,255,0.18)" }}>D ← colorless → K faint</span>
                     </div>
                   </div>
+
+                  {/* ── NEW: Certification ── */}
+                  <div>
+                    <p className="text-[8px] uppercase tracking-[0.45em] mb-4 font-semibold" style={{ color: "rgba(255,255,255,0.28)" }}>Certification</p>
+                    <div className="flex flex-wrap gap-2">
+                      {CERTIFICATION_OPTIONS.map(opt => (
+                        <CertPill
+                          key={opt.value}
+                          value={opt.value}
+                          label={opt.label}
+                          active={certFilter === opt.value}
+                          onClick={() => setCertFilter(opt.value)}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-[8px] mt-2.5 leading-relaxed" style={{ color: "rgba(255,255,255,0.22)" }}>
+                      Loose diamonds are sold without grading reports. Trade buyers may arrange independent grading at their discretion.
+                    </p>
+                  </div>
                 </div>
               </div>
   
-              {/* ─ Full-width: Carat Weight ─ */}
+              {/* ─ Full-width: Carat Weight — up to 20ct ─ */}
               <div className="pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                <p className="text-[8px] uppercase tracking-[0.45em] mb-5 font-semibold" style={{ color: "rgba(255,255,255,0.28)" }}>Carat Weight</p>
+                <div className="flex items-center gap-3 mb-5">
+                  <p className="text-[8px] uppercase tracking-[0.45em] font-semibold" style={{ color: "rgba(255,255,255,0.28)" }}>Carat Weight</p>
+                  <span className="text-[7px] px-2 py-0.5 font-medium" style={{ background:"rgba(28,169,201,0.06)", color:"rgba(28,169,201,0.6)", border:"1px solid rgba(28,169,201,0.15)", borderRadius:"9999px" }}>
+                    Up to {category === "loose" ? "20" : "10"} ct
+                  </span>
+                </div>
                 <div className="flex items-center gap-5">
                   <div className="text-sm font-semibold font-sans px-4 py-2 min-w-[60px] text-center"
                     style={{ background:"rgba(28,169,201,0.06)", border:"1px solid rgba(28,169,201,0.18)", color:"#1CA9C9", borderRadius:"6px" }}>
@@ -669,19 +824,30 @@
                       <div
                         className="absolute h-1.5 rounded-full"
                         style={{
-                          left: `${((caratMin - 0.5) / 4.5) * 100}%`,
-                          right: `${100 - ((caratMax - 0.5) / 4.5) * 100}%`,
+                          left: `${((caratMin - 0.5) / (caratRangeMax - 0.5)) * 100}%`,
+                          right: `${100 - ((caratMax - 0.5) / (caratRangeMax - 0.5)) * 100}%`,
                           background: "linear-gradient(90deg, #1CA9C9, #5DD6F0)",
                         }}
                       />
                     </div>
                     <div className="relative" style={{ height: "16px" }}>
-                      <input type="range" min="0.5" max="5" step="0.1" value={caratMin}
+                      <input type="range" min="0.5" max={caratRangeMax} step="0.1" value={caratMin}
                         onChange={e => setCaratMin(Math.min(Number(e.target.value), caratMax - 0.1))}
                         className="absolute inset-0 w-full opacity-0 h-4 cursor-pointer" style={{ zIndex:2 }} />
-                      <input type="range" min="0.5" max="5" step="0.1" value={caratMax}
+                      <input type="range" min="0.5" max={caratRangeMax} step="0.1" value={caratMax}
                         onChange={e => setCaratMax(Math.max(Number(e.target.value), caratMin + 0.1))}
                         className="absolute inset-0 w-full opacity-0 h-4 cursor-pointer" style={{ zIndex:3 }} />
+                    </div>
+                    {/* Tick marks */}
+                    <div className="flex justify-between">
+                      {Array.from({ length: category === "loose" ? 8 : 6 }, (_, i) => {
+                        const val = category === "loose"
+                          ? [0.5, 2, 4, 6, 8, 10, 14, 20][i]
+                          : [0.5, 1, 2, 3, 5, 10][i];
+                        return (
+                          <span key={val} className="text-[7px] font-mono" style={{ color: "rgba(255,255,255,0.2)" }}>{val}</span>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className="text-sm font-semibold font-sans px-4 py-2 min-w-[60px] text-center"
@@ -751,6 +917,150 @@
                   </Link>
                 </div>
               </motion.div>
+
+            ) : category === "loose" ? (
+              /* ── Loose diamonds tab content ── */
+              <motion.div key="loose" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }}>
+
+                {/* Loose diamonds info banner */}
+                <div
+                  className="mb-8 p-5 flex flex-col sm:flex-row items-start gap-4"
+                  style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)" }}
+                >
+                  <div className="shrink-0 w-10 h-10 flex items-center justify-center" style={{ border: "1px solid rgba(255,255,255,0.12)" }}>
+                    <svg width="18" height="18" viewBox="0 0 100 120" fill="none">
+                      <polygon points="50,4 88,30 88,70 50,96 12,70 12,30" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.5)" strokeWidth="3"/>
+                      <polygon points="50,4 88,30 50,54 12,30" fill="rgba(255,255,255,0.18)" strokeWidth="0"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.35em] font-semibold mb-1.5" style={{ color: "rgba(255,255,255,0.7)" }}>
+                      Loose Diamonds — Sold Without Grading Reports
+                    </p>
+                    <p className="text-[11px] leading-relaxed" style={{ color: "rgba(255,255,255,0.38)" }}>
+                      These stones are available to the trade as uncertified inventory. Weights and grades are assessed in-house.
+                      Independent GIA or IGI certification can be arranged prior to purchase on request.
+                      Stones range from sub-carat melee to exceptional large specimens up to 20ct.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Trust strip — loose-specific */}
+                <div
+                  className="grid grid-cols-2 md:grid-cols-4 gap-px mb-8"
+                  style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
+                >
+                  {[
+                    { icon: "◈", label: "Trade Pricing",        sub: "No retail margin, direct to trade" },
+                    { icon: "⬡", label: "In-House Assessment",  sub: "All grades verified by our gemologists" },
+                    { icon: "◎", label: "Cert on Request",      sub: "GIA/IGI grading available pre-purchase" },
+                    { icon: "✦", label: "Up to 20ct",           sub: "Large & parcel lots available" },
+                  ].map(t => (
+                    <div key={t.label} className="flex items-start gap-3 p-4" style={{ background:"#010D1C" }}>
+                      <span className="text-base mt-0.5 shrink-0" style={{ color: "rgba(255,255,255,0.4)" }}>{t.icon}</span>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.25em] font-semibold text-white">{t.label}</p>
+                        <p className="text-[9px] mt-0.5 leading-relaxed" style={{ color: "rgba(255,255,255,0.35)" }}>{t.sub}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Active filter chips */}
+                {hasFilters && (
+                  <div className="flex flex-wrap items-center gap-2 mb-5">
+                    <span className="text-[8px] uppercase tracking-[0.35em] shrink-0" style={{ color: "rgba(255,255,255,0.3)" }}>
+                      Filtered by
+                    </span>
+                    {shape !== "All" && (
+                      <button onClick={() => setShape("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(28,169,201,0.12)", border:"1px solid rgba(28,169,201,0.3)", color:"#1CA9C9" }}>
+                        Shape: {shape} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    {colorFilter !== "All" && (
+                      <button onClick={() => setColorFilter("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(28,169,201,0.12)", border:"1px solid rgba(28,169,201,0.3)", color:"#1CA9C9" }}>
+                        Color: {colorFilter} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    {clarity !== "All" && (
+                      <button onClick={() => setClarity("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(28,169,201,0.12)", border:"1px solid rgba(28,169,201,0.3)", color:"#1CA9C9" }}>
+                        Clarity: {clarity} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    {cut !== "All" && (
+                      <button onClick={() => setCut("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(28,169,201,0.12)", border:"1px solid rgba(28,169,201,0.3)", color:"#1CA9C9" }}>
+                        Cut: {cut} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    {fluorFilter !== "All" && (
+                      <button onClick={() => setFluorFilter("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(74,85,104,0.15)", border:"1px solid rgba(74,85,104,0.4)", color:"rgba(180,190,210,0.85)" }}>
+                        Fluor: {fluorFilter} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    <button onClick={resetFilters} className="text-[9px] uppercase tracking-[0.25em] px-2.5 py-1 transition-all hover:opacity-75"
+                      style={{ border:"1px solid rgba(255,255,255,0.12)", color:"rgba(255,255,255,0.4)" }}>
+                      Clear all
+                    </button>
+                  </div>
+                )}
+
+                {/* Results bar */}
+                <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+                  <p className="text-[10px] uppercase tracking-[0.35em]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                    <span className="text-white font-semibold text-sm">{filtered.length}</span>
+                    {" "}{filtered.length === 1 ? "stone" : "stones"} available
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.3)" }}>Sort</span>
+                      <select
+                        value={sortKey}
+                        onChange={e => setSortKey(e.target.value as SortKey)}
+                        className="text-[9px] uppercase tracking-[0.2em] py-1.5 px-3 appearance-none cursor-pointer"
+                        style={{ background: "#021C38", border: "1px solid rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.6)", outline: "none" }}
+                      >
+                        <option value="default">Default</option>
+                        <option value="carat-desc">Carat · High → Low</option>
+                        <option value="carat-asc">Carat · Low → High</option>
+                        <option value="clarity">Clarity · Best First</option>
+                        <option value="color">Color · D First</option>
+                      </select>
+                    </div>
+                    <div className="flex gap-1">
+                      {([2,3] as const).map(n => (
+                        <button key={n} onClick={() => setGridCols(n)}
+                          className="w-8 h-8 transition-all text-[9px] font-mono"
+                          style={{ border: `1px solid ${gridCols === n ? "#1CA9C9" : "rgba(255,255,255,0.12)"}`, color: gridCols === n ? "#1CA9C9" : "rgba(255,255,255,0.3)", background: gridCols === n ? "rgba(28,169,201,0.08)" : "transparent" }}
+                        >{n}×</button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Loose diamond grid */}
+                {filtered.length > 0 ? (
+                  <div className={`grid ${gridClass} gap-4`}>
+                    {filtered.map((d, i) => (
+                      <motion.div key={d.id} initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.45, delay: i * 0.04 }}>
+                        <StoneCard diamond={d} onRequest={() => setSelectedDiamond(d)} />
+                      </motion.div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-24 text-center">
+                    <p className="font-serif text-xl mb-3" style={{ color:"rgba(255,255,255,0.2)" }}>No stones match your filters</p>
+                    <button onClick={resetFilters} className="text-[10px] uppercase tracking-[0.35em] transition-colors" style={{ color:"#1CA9C9" }}>
+                      Clear all filters
+                    </button>
+                  </div>
+                )}
+
+              </motion.div>
   
             ) : (
               <motion.div key={category} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.3 }}>
@@ -808,6 +1118,18 @@
                       <button onClick={() => setCut("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
                         style={{ background:"rgba(28,169,201,0.12)", border:"1px solid rgba(28,169,201,0.3)", color:"#1CA9C9" }}>
                         Cut: {cut} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    {fluorFilter !== "All" && (
+                      <button onClick={() => setFluorFilter("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(74,85,104,0.15)", border:"1px solid rgba(74,85,104,0.4)", color:"rgba(180,190,210,0.85)" }}>
+                        Fluor: {fluorFilter} <span style={{ fontSize:"10px" }}>×</span>
+                      </button>
+                    )}
+                    {certFilter !== "All" && (
+                      <button onClick={() => setCertFilter("All")} className="flex items-center gap-1.5 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-medium transition-all hover:opacity-75"
+                        style={{ background:"rgba(28,169,201,0.12)", border:"1px solid rgba(28,169,201,0.3)", color:"#1CA9C9" }}>
+                        Cert: {certFilter} <span style={{ fontSize:"10px" }}>×</span>
                       </button>
                     )}
                     <button onClick={resetFilters} className="text-[9px] uppercase tracking-[0.25em] px-2.5 py-1 transition-all hover:opacity-75"
@@ -923,4 +1245,3 @@
       </div>
     );
   }
-  
