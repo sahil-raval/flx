@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { EASE } from "@/lib/motion";
 import { Link } from "wouter";
@@ -14,20 +13,98 @@ const stagger = {
 
 const SERVICES = [
   {
-    id: "conversion",
+    id: "natural-diamonds",
     number: "01",
-    label: "Core Service",
+    label: "Natural Diamonds",
+    title: "Natural\nDiamonds",
+    tagline: "Stones sourced with documented provenance and verified GIA grading at every step.",
+    body: [
+      "We source natural diamonds through an established trade network built over decades. Every stone we handle carries a current GIA grading report, and we verify each one before it reaches a buyer. Provenance is not a marketing claim — it is a condition of supply.",
+      "Our inventory spans a range of carat weights, shapes, and colour-clarity combinations, with a consistent focus on quality at the top of each bracket. For buyers who need reliable access to well-graded natural stones, we offer individual sourcing, ongoing standing briefs, and supply arrangements structured to your requirements.",
+    ],
+    qualifies: [
+      "Jewellers and manufacturers requiring consistent access to GIA-graded natural stones",
+      "Buyers seeking a sourcing partner with verified trade relationships, not aggregator listings",
+      "Enquiries from 0.30ct upward across round brilliant, fancy shapes, and select cuts",
+      "Trade accounts with an established business profile",
+    ],
+    delivers: [
+      "Individual stone details with GIA report numbers on request",
+      "Accurate representation of colour, clarity, cut, and carat — no embellishment",
+      "Discreet, documented delivery with appropriate commercial paperwork",
+      "Standing brief fulfilment for buyers with ongoing or repeat requirements",
+    ],
+    turnaround: "Typically 1–3 weeks depending on specification",
+    dark: true,
+    signature: false,
+  },
+  {
+    id: "lab-grown",
+    number: "02",
+    label: "Lab Grown Diamonds",
+    title: "Lab Grown\nDiamonds",
+    tagline: "Certified consistency and accessible pricing — modern quality without compromise.",
+    body: [
+      "Lab grown diamonds are chemically and optically identical to their natural counterparts, and the best of them carry the same third-party certifications. What they offer above all else is pricing transparency and grading consistency — qualities that matter to buyers who need to plan, budget, and communicate value to their own clients.",
+      "We supply GIA-certified lab grown stones with the same attention to grading accuracy we apply across all our inventory. Supply can be arranged as one-off purchases or ongoing allocation agreements against agreed parameters of size, shape, and quality.",
+    ],
+    qualifies: [
+      "Retailers and manufacturers building product lines around lab grown stones",
+      "Buyers seeking a reliable supplier with certified, accurately represented inventory",
+      "Enquiries from 0.30ct upward; rounds, ovals, cushions, and other standard shapes",
+      "New trade partners subject to a brief qualification process",
+    ],
+    delivers: [
+      "GIA-certified lab grown diamonds with report numbers provided on request",
+      "Honest grading representation — the certificate is the specification",
+      "Flexible supply arrangements including standing allocation briefs",
+      "Discreet commercial documentation and delivery",
+    ],
+    turnaround: "Typically 1–2 weeks for in-stock stones",
+    dark: false,
+    signature: false,
+  },
+  {
+    id: "customizing",
+    number: "03",
+    label: "Customizing Diamonds",
+    title: "Customizing\nDiamonds",
+    tagline: "Bespoke shaping, cutting, and finishing — the stone, built precisely to your brief.",
+    body: [
+      "Not every client's requirement is met by what is already available. We offer a bespoke customization service for buyers who need a diamond shaped, cut, or finished to a specific brief — whether that is a particular outline, a target carat range from a given rough, or a refined finish on an existing polished stone.",
+      "The process begins with a design consultation to establish what is technically achievable and commercially viable. From there, we manage the cutting and finishing process with the precision that the diamond trade demands, delivering a stone that meets the agreed specification.",
+    ],
+    qualifies: [
+      "Jewellers and designers requiring a stone cut to a specific shape or carat brief",
+      "Buyers working with rough or semi-polished material who need expert finishing",
+      "Clients with an existing stone requiring recutting, reshaping, or facet refinement",
+      "Trade partners whose production requires consistent bespoke supply",
+    ],
+    delivers: [
+      "Initial consultation to assess viability and establish the specification",
+      "Expert cutting and finishing to the agreed brief, with milestone updates",
+      "Final stone with full documentation of work performed",
+      "GIA or equivalent certification arranged where applicable",
+    ],
+    turnaround: "4–8 weeks from agreed brief to completed stone, depending on complexity",
+    dark: true,
+    signature: false,
+  },
+  {
+    id: "conversion",
+    number: "04",
+    label: "House Signature",
     title: "IF → FL\nConversion",
     tagline: "The conversion that redefines a stone's commercial ceiling.",
     body: [
-      "We assess Internally Flawless (IF) diamonds for the specific surface characteristics that hold them below FL grade. Where removal is viable, with no meaningful carat loss, we execute a precision micro-regrind of the affected facet and re-submit the stone to GIA for FL certification.",
+      "We assess Internally Flawless (IF) diamonds for the specific surface characteristics that hold them below FL grade. Where removal is viable — with no meaningful carat loss — we execute a precision micro-regrind of the affected facet and re-submit the stone to GIA for FL certification.",
       "The result is a GIA-certified Flawless diamond with verified carat weight, documented conversion history, and a new certificate. For the buyer or portfolio holder, FL carries a material premium over IF that justifies the conversion cost many times over at commercial scale.",
     ],
     qualifies: [
       "IF diamonds with surface-only characteristics (naturals, extra facets, surface graining)",
       "Minimum 0.50ct; conversion economics justify from this threshold upward",
       "Round brilliant or other standard cuts with accessible facet geometry",
-      "Stones accompanied by current GIA grading report",
+      "Stones accompanied by a current GIA grading report",
     ],
     delivers: [
       "Written assessment with conversion viability and projected outcome",
@@ -36,91 +113,17 @@ const SERVICES = [
       "Full documentation of the conversion for your records",
     ],
     turnaround: "3–6 weeks from stone receipt to FL certificate",
-    dark: true,
-  },
-  {
-    id: "supply",
-    number: "02",
-    label: "Diamond Supply",
-    title: "Premium FL\nInventory",
-    tagline: "GIA-certified Flawless diamonds. Verified, consistent, available to trade.",
-    body: [
-      "Beyond conversion, we maintain a curated inventory of GIA-certified FL and IF diamonds sourced through our established trade network. Each stone is individually verified before we make it available. We do not list stones we have not handled.",
-      "Supply arrangements can be structured as one-off purchases, ongoing allocation agreements, or standing requests against specific parameters (carat range, shape, colour, fluorescence).",
-    ],
-    qualifies: [
-      "Established jewellers, manufacturers, and diamond traders",
-      "Buyers seeking consistent FL supply rather than one-time sourcing",
-      "Minimum enquiry: 0.50ct, no minimum number of stones per enquiry",
-      "New trade partners subject to a brief qualification process",
-    ],
-    delivers: [
-      "Individual stone listings with GIA report numbers on request",
-      "Accurate representation of colour, clarity, and cut grade",
-      "Discreet delivery with appropriate commercial documentation",
-      "Standing availability alerts for buyers with specific brief",
-    ],
-    turnaround: "Typically 1–3 weeks for in-stock stones",
     dark: false,
-  },
-  {
-    id: "investment",
-    number: "03",
-    label: "Investment Advisory",
-    title: "Diamonds as a\nStore of Value",
-    tagline: "For buyers approaching diamonds as a capital asset rather than a product.",
-    body: [
-      "FL-grade diamonds at meaningful carat weights have historically functioned as a portable, non-correlated store of value. The IF→FL conversion represents a specific arbitrage: the cost of regrinding is predictable, the FL premium over IF is documented, and the GIA certification makes the value transparent.",
-      "We advise a small number of private buyers and family offices on diamond acquisition strategy, helping them understand what they are buying, at what price relative to the market, and what realistic exit routes look like.",
-    ],
-    qualifies: [
-      "Private buyers considering diamonds as a component of a broader asset strategy",
-      "Family offices and wealth managers seeking guidance on diamond valuation",
-      "Buyers with budgets from AUD $50,000 upward per engagement",
-      "Referral or introduction preferred; direct enquiry welcomed",
-    ],
-    delivers: [
-      "Honest assessment of diamonds as an investment class, including its limitations",
-      "Acquisition sourcing at trade-adjacent pricing where possible",
-      "Documentation of purchase rationale for portfolio records",
-      "Ongoing relationship for future acquisition or disposition advisory",
-    ],
-    turnaround: "Initial call within one week; advisory structured individually",
-    dark: true,
-  },
-  {
-    id: "partnership",
-    number: "04",
-    label: "Trade Partnership",
-    title: "Structured B2B\nRelationships",
-    tagline: "For serious buyers who need a reliable, long-term supply relationship.",
-    body: [
-      "We work with a limited number of trade partners on an ongoing basis, typically jewellery manufacturers, diamond traders, or high-end retailers who need consistent access to our conversion service or FL inventory across production seasons.",
-      "A trade partnership is not a subscription or a volume discount scheme. It is an agreement to communicate directly, work within agreed parameters, and handle commercial matters with the discretion that the diamond trade demands.",
-    ],
-    qualifies: [
-      "Established businesses with verifiable trade history",
-      "Buyers requiring regular volume, at least 4 engagements per year",
-      "Partners willing to operate within agreed NDA and confidentiality terms",
-      "Businesses where a direct relationship with the principal is appropriate",
-    ],
-    delivers: [
-      "Priority access to conversion slots ahead of spot enquiries",
-      "Standing allocation from inventory ahead of general listing",
-      "Direct communication with Babu Vekariya on technical questions",
-      "Flexible commercial terms negotiated individually",
-    ],
-    turnaround: "Partnership terms agreed within 2–3 weeks of initial conversation",
-    dark: false,
+    signature: true,
   },
 ];
 
 function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number }) {
-  const bg       = s.dark ? "#02274A" : "#F4F8FC";
-  const text     = s.dark ? "rgba(255,255,255,0.85)" : "rgba(2,39,74,0.85)";
-  const muted    = s.dark ? "rgba(255,255,255,0.36)" : "rgba(2,39,74,0.38)";
-  const border   = s.dark ? "rgba(255,255,255,0.07)" : "rgba(2,39,74,0.07)";
-  const tagColor = s.dark ? "rgba(255,255,255,0.28)" : "rgba(2,39,74,0.3)";
+  const bg       = s.dark ? "#02274A" : "white";
+  const text     = s.dark ? "rgba(255,255,255,0.85)" : "#02274A";
+  const muted    = s.dark ? "rgba(255,255,255,0.36)" : "rgba(2,39,74,0.5)";
+  const border   = s.dark ? "rgba(255,255,255,0.07)" : "rgba(2,39,74,0.08)";
+  const tagColor = s.dark ? "rgba(255,255,255,0.28)" : "rgba(2,39,74,0.35)";
 
   return (
     <motion.section
@@ -168,12 +171,31 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
         <div className="grid md:grid-cols-12 gap-10 md:gap-20 items-start">
 
           {/* LEFT — heading block */}
-          <motion.div variants={stagger} className="md:col-span-4 space-y-5">
+          <motion.div variants={stagger} className="md:col-span-4 space-y-4">
+            {/* Signature badge — only for the IF→FL block */}
+            {s.signature && (
+              <motion.div variants={fade} className="inline-flex items-center gap-2 mb-0">
+                <span
+                  className="text-[8px] uppercase tracking-[0.35em] px-2.5 py-1 border"
+                  style={{
+                    color: "#1CA9C9",
+                    borderColor: "rgba(28,169,201,0.35)",
+                    background: "rgba(28,169,201,0.06)",
+                    letterSpacing: "0.35em",
+                  }}
+                >
+                  Signature Service
+                </span>
+              </motion.div>
+            )}
+
             <motion.h2
               variants={fade}
               className="font-serif leading-tight"
               style={{
-                fontSize: "clamp(2rem, 4vw, 3.4rem)",
+                fontSize: s.signature
+                  ? "clamp(2.2rem, 4.5vw, 3.8rem)"
+                  : "clamp(2rem, 4vw, 3.4rem)",
                 color: text,
                 whiteSpace: "pre-line",
               }}
@@ -181,7 +203,15 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
               {s.title}
             </motion.h2>
             <motion.span variants={fade} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
-            <motion.p variants={fade} className="text-sm leading-relaxed italic" style={{ color: tagColor }}>
+            <motion.p
+              variants={fade}
+              className="text-sm leading-relaxed italic"
+              style={{
+                color: tagColor,
+                fontWeight: s.signature ? 500 : 400,
+                fontSize: s.signature ? "0.875rem" : undefined,
+              }}
+            >
               {s.tagline}
             </motion.p>
 
