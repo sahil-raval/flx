@@ -4,12 +4,8 @@ import { useState, useMemo, useRef } from "react";
   import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
   import { Input } from "@/components/ui/input";
   import { Button } from "@/components/ui/button";
-  
-  /* ── Types ─────────────────────────────────────────────── */
   type Category = "natural" | "lab" | "loose" | "custom";
-
   type Certification = "GIA" | "IGI" | "None";
-  
   interface Diamond {
     id: number; stockId: string; type: "natural" | "lab" | "loose";
     shape: string; carat: number; color: string; clarity: string;
@@ -17,7 +13,6 @@ import { useState, useMemo, useRef } from "react";
     measurements: string; image: string; certification: Certification;
   }
   
-  /* ── Inventory ─────────────────────────────────────────── */
   const DIAMONDS: Diamond[] = [
     { id:  1, stockId:"FLX-N-001", type:"natural", shape:"Round",    carat:1.52, color:"D", clarity:"FL",   cut:"Ideal",     polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"7.35×7.38×4.52 mm",  image:"/diamond-1.png", certification:"GIA" },
     { id:  2, stockId:"FLX-N-002", type:"natural", shape:"Oval",     carat:2.01, color:"E", clarity:"IF",   cut:"Excellent", polish:"Excellent", symmetry:"Excellent", fluorescence:"None",   measurements:"10.35×7.42×4.49 mm", image:"/diamond-2.png", certification:"GIA" },

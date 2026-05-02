@@ -49,7 +49,7 @@ export function Footer() {
           >
             <Link href="/" data-testid="footer-logo" className="inline-block group">
               <img
-                src="/flx-logo-v2-trimmed.png"
+                src="/flx-logo.png"
                 alt="FLX Diamond"
                 style={{
                   height: "clamp(56px, 8vw, 96px)",
