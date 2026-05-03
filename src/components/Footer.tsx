@@ -205,7 +205,7 @@ export function Footer() {
         style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
       >
         <p className="text-[9px] tracking-[0.3em] uppercase" style={{ color: "rgba(255,255,255,0.4)" }}>
-          &copy; {new Date().getFullYear()} FLX Diamonds Pty Ltd &mdash; Geelong, Victoria, Australia
+          &copy; {new Date().getFullYear()} FLX Diamonds Pty Ltd &mdash; ABN 43 665 467 274 &mdash; Geelong, Victoria, Australia
         </p>
         <div className="flex gap-6">
           {[{ href: "/privacy", label: "Privacy" }, { href: "/terms", label: "Terms" }].map(l => (
